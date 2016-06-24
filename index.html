@@ -79,10 +79,10 @@
 
 		<div class='row'>
 			<div class='col-xs-6'>
-				<button type="button" class="btn btn-primary btn-lg hilo" data-hilo="higher" data-toggle="" data-target="#myModal">YES</button>
+				<button type="button" class="btn btn-primary btn-lg high-low" data-high-low="higher" data-toggle="" data-target="#myModal">YES</button>
 			</div>
 			<div class='col-xs-6'>
-				<button type="button" class="btn btn-primary btn-lg hilo" data-hilo="lower" data-toggle="" data-target="#myModal">NO</button>
+				<button type="button" class="btn btn-primary btn-lg high-low" data-high-low="lower" data-toggle="" data-target="#myModal">NO</button>
 			</div>
 		</div>
 
@@ -113,11 +113,11 @@ var offline = false;
 // GUFF
 var product1Pids,product1Data,product2Pids,product2Data;
 
-$(function(){ // When page is ready, run this code.
+(function(){ // When page is ready, run this code.
 	// check if offline first then open run cached game
 	// _checkOffline();
 	getNewProducts(); // Start new game
-});
+})();
 
 function getNewProducts(){
 
@@ -140,11 +140,15 @@ function getNewProducts(){
 function getProduct(){
 
 	var offset = _getRandomOffset(); // Get products from a set range using an offset. E.g. offset = 345, get me some PIDS starting from 345
-	var results = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/60/"+offset+"/pids",
+	var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/60/"+offset+"/pids",
 		type: "GET"
 	});
 
-	return results;
+	// var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids', {
+	// 	method: 'get'
+	// })
+
+	return promiseToReturnResults;
 }
 
 function getProductData(pidData){
@@ -154,11 +158,15 @@ function getProductData(pidData){
 	var pid = pidData.pids[randomArrayPosition];
 
 	// Get product description data
-	var results = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/"+pid,
+	var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/"+pid,
 		type: "GET"
 	});
 
-	return results;
+	// var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid, {
+	// 	method: 'get'
+	// })
+
+	return promiseToReturnResults;
 }
 
 function processProductData(productData){
@@ -176,21 +184,22 @@ function processProductData(productData){
 
 	// Output information onto page
 	// If product 1 has not been output to the page yet
+
 	if(product1IsSet === false){
 		// output product 1
-		$('#p1Name').html('<p><b>'+designer+'</b></p><p>'+name+'</p>');
-		$('#image1').attr('src',imageURL);
-		$('#p1Price').attr('data-price',price);
-		$('#p1Description').html(description);
+		document.getElementById('p1Name').innerHTML = '<p><b>'+designer+'</b></p><p>'+name+'</p>';
+		document.getElementById('image1').setAttribute('src',imageURL);
+		document.getElementById('p1Price').setAttribute('data-price',price);
+		document.getElementById('p1Description').innerHTML = description;
 
 		product1IsSet = true;
 	}
 	else{
 		// output product 2
-		$('#p2Name').html('<p><b>'+designer+'</b></p><p>'+name+'</p>');
-		$('#image2').attr('src',imageURL);
-		$('#p2Price').attr('data-price',price);
-		$('#p2Description').html(description);
+		document.getElementById('p2Name').innerHTML = '<p><b>'+designer+'</b></p><p>'+name+'</p>';
+		document.getElementById('image2').setAttribute('src',imageURL);
+		document.getElementById('p2Price').setAttribute('data-price',price);
+		document.getElementById('p2Description').innerHTML = description;
 	}
 
 	// Typical image URL:
@@ -199,32 +208,30 @@ function processProductData(productData){
 }
 
 function fetchFailed(){
-	alert('Sheaaaaa, data fetch failed');
+	alert('Data fetch failed ʕノ•ᴥ•ʔノ ︵ ┻━┻');
 	console.log('fetch failed');
 }
 
 function processAnswer(element){
 	product1IsSet = false; // We don't want to override the first product's slot
-	var selection = $(element).attr('data-hilo'); // Get high or lower is pressed
-	var price1 = atob($('#p1Price').attr('data-price'))/100;
-	var price2 = atob($('#p2Price').attr('data-price'))/100;
+	var selection = element.getAttribute('data-high-low'); // Retrieve whether higher or lower is pressed
+
+	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100; // atob($('#p1Price').attr('data-price'))/100;
+	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100; // atob($('#p2Price').attr('data-price'))/100;
 
 	if(selection == 'higher' && price1 > price2) {
-		$('#answerModalText').html('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
-		// alert('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
 		_addToScore();
 	}
-	else if(price1 < price2){
-		$('#answerModalText').html('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
-		// alert('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+	else if(selection == 'lower' && price1 < price2){
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
 		_addToScore();
 	}
 	else if (price1 === price2) {
-		$('#answerModalText').html('Same! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Same price! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
 	}
 	else {
-		$('#answerModalText').html('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
-		// alert('Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2)
+		document.getElementById('answerModalText').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
 	}
 
 	$('#answerModal').modal();
@@ -246,7 +253,7 @@ function _getRandomNumber(min, max) {
 
 function _addToScore(){
 	score++;
-	$('#score').html(score);
+	document.getElementById('score').innerHTML = score;
 }
 
 // function _checkOffline(){
@@ -266,8 +273,15 @@ function _addToScore(){
 // Event listeners
 //////////////////////
 
-$('.hilo').on('click', function(){ processAnswer(this); }); // Whenever a button with a class of 'hilo' gets pressed, run the processAnswer function
+[].forEach.call(document.getElementsByClassName('high-low'), function(element) {
+	element.addEventListener('click', function(){ processAnswer(this); });
+});
 
+// JQuery guff
+// $('.high-low').on('click', function(){ processAnswer(this); }); // Whenever a button with a class of 'high-low' gets pressed, run the processAnswer function
+
+// Only retrieves first element found
+// document.querySelector('.high-low')
 </script>
 </body>
 </html>
