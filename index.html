@@ -221,7 +221,7 @@ function processAnswer(element){
 	var displayPrice2 = price2.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' });
 
 	if(selection == 'higher' && price1 > price2) {
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ displayPrice1 +'. Product 2: £'+displayPrice2);
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 		_addToScore();
 	}
 	else if(selection == 'lower' && price1 < price2){
