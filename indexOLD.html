@@ -64,13 +64,13 @@
 
 		<div class="row">
 			<div class="col-xs-6">
-				<div id='p1Description' class="description">
+				<div id='p1Description' class="description" style="display:none">
 					... Loading Description
 				</div>
 				<div id="p1Price" data-price=''></div>
 			</div>
 			<div class="col-xs-6">
-				<div id='p2Description' class="description">
+				<div id='p2Description' class="description" style="display:none">
 					... Loading Description
 				</div>
 				<div id="p2Price" data-price=''></div>
@@ -124,25 +124,25 @@ function getNewProducts(){
 	product1 = getProductIds()	// First product
 		.then(getProductData)
 		.then(processProductData)
-		.catch(fetchFailed);
+		// .catch(fetchFailed);
 
 	product2 = getProductIds() // Second product
 		.then(getProductData)
 		.then(processProductData)
-		.catch(fetchFailed);
+		// .catch(fetchFailed);
 }
 
 function getProductIds(){
 
 	var offset = _getRandomOffset(); // Get products from a set range using an offset. E.g. offset = 345, get me some PIDS starting from 345
 
-	// var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/60/"+offset+"/pids",
-	// 	type: "GET"
-	// });
+	var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/1000/0/pids?sort=price-desc&visibility=visible",
+		type: "GET"
+	});
 
-	var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids', {
-		method: 'get'
-	})
+	// var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids', {
+	// 	method: 'get'
+	// })
 
 	return promiseToReturnResults;
 }
@@ -154,13 +154,13 @@ function getProductData(pidData){
 	var pid = pidData.pids[randomArrayPosition];
 
 	// Get product description data
-	// var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/"+pid,
-	// 	type: "GET"
-	// });
+	var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/"+pid,
+		type: "GET"
+	});
 
-	var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid, {
-		method: 'get'
-	})
+	// var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid, {
+	// 	method: 'get'
+	// })
 
 	return promiseToReturnResults;
 }
@@ -215,19 +215,24 @@ function processAnswer(element){
 	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100; // atob($('#p1Price').attr('data-price'))/100;
 	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100; // atob($('#p2Price').attr('data-price'))/100;
 
+
+
+	var displayPrice1 = price1.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' });
+	var displayPrice2 = price2.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' });
+
 	if(selection == 'higher' && price1 > price2) {
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ displayPrice1 +'. Product 2: £'+displayPrice2);
 		_addToScore();
 	}
 	else if(selection == 'lower' && price1 < price2){
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 		_addToScore();
 	}
 	else if (price1 === price2) {
-		document.getElementById('answerModalText').innerHTML = ('Same price! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Same price! No points though sorry. Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 	}
 	else {
-		document.getElementById('answerModalText').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 	}
 
 	$('#answerModal').modal();
