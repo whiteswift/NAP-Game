@@ -64,13 +64,13 @@
 
 		<div class="row">
 			<div class="col-xs-6">
-				<div id='p1Description' class="description">
+				<div id='p1Description' class="description" style="display:none">
 					... Loading Description
 				</div>
 				<div id="p1Price" data-price=''></div>
 			</div>
 			<div class="col-xs-6">
-				<div id='p2Description' class="description">
+				<div id='p2Description' class="description" style="display:none">
 					... Loading Description
 				</div>
 				<div id="p2Price" data-price=''></div>
@@ -121,97 +121,28 @@ var product1Pids,product1Data,product2Pids,product2Data;
 
 function getNewProducts(){
 
+	product1 = getProductIds()	// First product
+		.then(getProductData)
+		.then(processProductData)
+		// .catch(fetchFailed);
 
-	var offset = _getRandomOffset();
-	// var productIds = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids', {
-	// 	method: 'get'
-	// })
-
-	//var productIds = 'http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids';
-
-	fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids').then(
-		function(pidsResponse) {
-			if (pidsResponse.status !== 200) {
-				console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',pidsResponse.status);
-				return;
-			}
-
-			pidsResponse.json().then(function(data) {
-				console.log(data);
-			})
-		  return pidsResponse;
-		}
-	);
-
-	// .then(function(pidData) {
-
-	// fetch(productIds).then(function(pidsResponse) {
-	// 	return pidsResponse;
-	// }).then(function(pidData) {
-
-
-
-
-	// // Get product details for 1
-	// var randomArrayPosition = _getRandomNumber(0,59); // Randomly pick one of the 60 results
-	// var pid = pidData.pids[randomArrayPosition];
-	// var productDetails = 'http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid
-	//
-	// fetch(productDetails).then(function(product1Response) {
-	// 	// get summaries data
-	// 	console.log('productData',product1Response);
-	// 	// form image
-	// })
-	//
-	// // Get product details for 2
-	// randomArrayPosition = _getRandomNumber(0,59);
-	// pid = pidData.pids[randomArrayPosition];
-	// productDetails = 'http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid
-	//
-	// fetch(productDetails).then(function(product2Response) {
-	// 	// get summaries data
-	// 	console.log('productData',product2Response);
-	// 	// form image
-	// })
-	//
-	// }).catch(function(){
-	// 	_fetchFailed();
-	// };
-
-
-
-
-
-
-
-
-
-	// product1 = getProductIds()	// First product
-	// 	.then(getProductData)
-	// 	.then(processProductData)
-	// 	.catch(_fetchFailed());
-	//
-	// product2 = getProductIds() // Second product
-	// 	.then(getProductData)
-	// 	.then(processProductData)
-	// 	.catch(_fetchFailed());
-
-
-
-
+	product2 = getProductIds() // Second product
+		.then(getProductData)
+		.then(processProductData)
+		// .catch(fetchFailed);
 }
 
 function getProductIds(){
 
 	var offset = _getRandomOffset(); // Get products from a set range using an offset. E.g. offset = 345, get me some PIDS starting from 345
 
-	// var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/60/"+offset+"/pids",
-	// 	type: "GET"
-	// });
+	var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/1000/0/pids?sort=price-desc&visibility=visible",
+		type: "GET"
+	});
 
-	var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids', {
-		method: 'get'
-	})
+	// var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids', {
+	// 	method: 'get'
+	// })
 
 	return promiseToReturnResults;
 }
@@ -223,13 +154,13 @@ function getProductData(pidData){
 	var pid = pidData.pids[randomArrayPosition];
 
 	// Get product description data
-	// var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/"+pid,
-	// 	type: "GET"
-	// });
+	var promiseToReturnResults = $.ajax({url: "http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/"+pid,
+		type: "GET"
+	});
 
-	var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid, {
-		method: 'get'
-	})
+	// var promiseToReturnResults = fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pid, {
+	// 	method: 'get'
+	// })
 
 	return promiseToReturnResults;
 }
@@ -272,6 +203,11 @@ function processProductData(productData){
 	// http://cache.net-a-porter.com/images/products/592415/592415_in_dl.jpg
 }
 
+function fetchFailed(){
+	// alert('Data fetch failed ʕノ•ᴥ•ʔノ ︵ ┻━┻');
+	console.log('fetch failed');
+}
+
 function processAnswer(element){
 	product1IsSet = false; // We don't want to override the first product's slot
 	var selection = element.getAttribute('data-high-low'); // Retrieve whether higher or lower is pressed
@@ -279,19 +215,24 @@ function processAnswer(element){
 	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100; // atob($('#p1Price').attr('data-price'))/100;
 	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100; // atob($('#p2Price').attr('data-price'))/100;
 
+
+
+	var displayPrice1 = price1.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' });
+	var displayPrice2 = price2.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' });
+
 	if(selection == 'higher' && price1 > price2) {
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ displayPrice1 +'. Product 2: £'+displayPrice2);
 		_addToScore();
 	}
 	else if(selection == 'lower' && price1 < price2){
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 		_addToScore();
 	}
 	else if (price1 === price2) {
-		document.getElementById('answerModalText').innerHTML = ('Same price! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('Same price! No points though sorry. Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 	}
 	else {
-		document.getElementById('answerModalText').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('answerModalText').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: '+ displayPrice1 +'. Product 2: '+displayPrice2);
 	}
 
 	$('#answerModal').modal();
@@ -314,11 +255,6 @@ function _getRandomNumber(min, max) {
 function _addToScore(){
 	score++;
 	document.getElementById('score').innerHTML = score;
-}
-
-function _fetchFailed(){
-	// alert('Data fetch failed ʕノ•ᴥ•ʔノ ︵ ┻━┻');
-	console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed');
 }
 
 // function _checkOffline(){
