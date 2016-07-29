@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>Higher or Lower</title>
-	<script src="jquery.js"></script>
 	<link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap-theme.min.css">
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> <!-- To stop pound signs showing up like weird characters -->
@@ -27,7 +26,7 @@
 		width: 100%;
 		height: 100%;
 		text-align: center;
-		background: rgb(55,55,55);
+		background: rgba(55, 55, 55, 0.75);
 		z-index: 1000;
 		color: white;
 		padding: 8vw;
@@ -48,7 +47,6 @@
 		text-transform: uppercase;
 	}
 	</style>
-	<script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -56,7 +54,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h1>Higher or Lower game</h1>
-				<h4>Does product 'A' cost more than product 'B'?</h4>
+				<h4>Which product costs more?</h4>
 			</div>
 		</div>
 		<div class='row'>
@@ -104,25 +102,13 @@
 
 		<div class='row'>
 			<div class='col-xs-6'>
-				<button type="button" class="btn btn-primary btn-lg high-low" data-high-low="higher" data-toggle="" data-target="#myModal">YES</button>
+				<button id='A' type="button" class="btn btn-primary btn-lg high-low" data-product="A">A</button>
 			</div>
 			<div class='col-xs-6'>
-				<button type="button" class="btn btn-primary btn-lg high-low" data-high-low="lower" data-toggle="" data-target="#myModal">NO</button>
+				<button id='B' type="button" class="btn btn-primary btn-lg high-low" data-product="B">B</button>
 			</div>
 		</div>
 
-	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="answerModalText">?</h4>
-				</div>
-			</div>
-		</div>
 	</div>
 
 	<div id="overlay">
@@ -235,15 +221,15 @@ function getNewProducts(){
 
 function processAnswer(element) {
 
-	var selection = element.getAttribute('data-high-low'); // Retrieve whether higher or lower is pressed
+	var selection = element.getAttribute('data-product'); // Retrieve whether product A or B is pressed
 	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100;
 	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100;
 
-	if(selection == 'higher' && price1 > price2) {
+	if(selection === 'A' && price1 > price2) {
 		document.getElementById('overlay-text').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
 		_addToScore();
 	}
-	else if(selection == 'lower' && price1 < price2) {
+	else if(selection === 'B' && price1 < price2) {
 		document.getElementById('overlay-text').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
 		_addToScore();
 	}
@@ -254,9 +240,7 @@ function processAnswer(element) {
 		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
 	}
 
-	// $('#answerModal').modal();
 	overlayMessage();
-
 	getNewProducts(); // Get new products again
 }
 
@@ -297,6 +281,18 @@ function overlayMessage() {
 });
 
 document.getElementById('overlay').addEventListener('click', function(){ overlayMessage(); });
+
+window.addEventListener('keydown', function(event){
+	if(event.keyCode === 37 || event.keyCode === 65) {
+		let button = document.getElementById('A');
+		processAnswer(button);
+	}
+	if(event.keyCode === 39 || event.keyCode === 66) {
+		let button = document.getElementById('B');
+		processAnswer(button);
+	}
+});
+
 
 </script>
 </body>
