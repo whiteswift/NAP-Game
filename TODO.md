@@ -15,3 +15,4 @@
 - Play an airhorn noise when correctly answered
 - Look at streams so that multiple people can vote
 - Leaderboard
+- Offline using service workers - Use cached content first then call network

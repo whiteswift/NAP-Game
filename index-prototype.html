@@ -7,18 +7,46 @@
 	<link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap-theme.min.css">
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> <!-- To stop pound signs showing up like weird characters -->
 	<style>
-		.img{
-			height: 300px;
-		}
-		.center{
-			text-align: center;
-		}
-		.description{
-			font-size: 12px;
-    	font-style: italic;
-			overflow: scroll;
-			height: 100px;
-		}
+	.img{
+		height: 300px;
+	}
+	.center{
+		text-align: center;
+	}
+	.description{
+		font-size: 12px;
+  	font-style: italic;
+		overflow: scroll;
+		height: 100px;
+	}
+	#overlay {
+		visibility: hidden;
+		position: absolute;
+		left: 0px;
+		top: 0vw;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		background: rgb(55,55,55);
+		z-index: 1000;
+		color: white;
+		padding: 8vw;
+	}
+	#overlay-text {
+		font-size: 3vw;
+	}
+	#overlay > div > button {
+		color: #484848;
+		background: white;
+		border-radius: 5px;
+		border: 1px solid grey;
+		width: 10.5vw;
+		height: 2.5vw;
+		font-family: gillsans;
+		font-size: 1vw;
+		cursor: pointer;
+		text-transform: uppercase;
+	}
 	</style>
 	<script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 </head>
@@ -96,6 +124,13 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="overlay">
+	  <div>
+	      <p id='overlay-text'>Content you want the user to see goes here.</p>
+				<button>Dismiss</button>
+	  </div>
+ 	</div>
 
 	<script>
 
@@ -201,25 +236,27 @@ function getNewProducts(){
 function processAnswer(element) {
 
 	var selection = element.getAttribute('data-high-low'); // Retrieve whether higher or lower is pressed
-	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100; // atob($('#p1Price').attr('data-price'))/100;
-	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100; // atob($('#p2Price').attr('data-price'))/100;
+	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100;
+	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100;
 
 	if(selection == 'higher' && price1 > price2) {
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
 		_addToScore();
 	}
 	else if(selection == 'lower' && price1 < price2) {
-		document.getElementById('answerModalText').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
 		_addToScore();
 	}
 	else if (price1 === price2) {
-		document.getElementById('answerModalText').innerHTML = ('Same price! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Same price! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
 	}
 	else {
-		document.getElementById('answerModalText').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
 	}
 
-	$('#answerModal').modal();
+	// $('#answerModal').modal();
+	overlayMessage();
+
 	getNewProducts(); // Get new products again
 }
 
@@ -241,9 +278,14 @@ function _addToScore(){
 	document.getElementById('score').innerHTML = score;
 }
 
+// TODO: Need this?
 function _fetchFailed(){
-	// alert('Data fetch failed ʕノ•ᴥ•ʔノ ︵ ┻━┻');
 	console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed');
+}
+
+function overlayMessage() {
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 
 //////////////////////
@@ -253,6 +295,8 @@ function _fetchFailed(){
 [].forEach.call(document.getElementsByClassName('high-low'), function(element) {
 	element.addEventListener('click', function(){ processAnswer(this); });
 });
+
+document.getElementById('overlay').addEventListener('click', function(){ overlayMessage(); });
 
 </script>
 </body>
