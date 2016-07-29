@@ -113,7 +113,7 @@
 
 	<div id="overlay">
 	  <div>
-	      <p id='overlay-text'>Content you want the user to see goes here.</p>
+	      <p id='overlay-text'>Loading message...</p>
 				<button>Dismiss</button>
 	  </div>
  	</div>
@@ -226,18 +226,18 @@ function processAnswer(element) {
 	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100;
 
 	if(selection === 'A' && price1 > price2) {
-		document.getElementById('overlay-text').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Correct! Product A: £'+ price1 +'. Product B: £'+price2);
 		_addToScore();
 	}
 	else if(selection === 'B' && price1 < price2) {
-		document.getElementById('overlay-text').innerHTML = ('Correct! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Correct! Product A: £'+ price1 +'. Product B: £'+price2);
 		_addToScore();
 	}
 	else if (price1 === price2) {
-		document.getElementById('overlay-text').innerHTML = ('Same price! No points though sorry. Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Same price! No points though sorry. Product A: £'+ price1 +'. Product B: £'+price2);
 	}
 	else {
-		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product 1: £'+ price1 +'. Product 2: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product A: £'+ price1 +'. Product B: £'+price2);
 	}
 
 	overlayMessage();
@@ -272,6 +272,11 @@ function overlayMessage() {
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 
+function isOverlayVisible() {
+	el = document.getElementById("overlay");
+	return el.style.visibility;
+}
+
 //////////////////////
 // Event listeners
 //////////////////////
@@ -283,13 +288,21 @@ function overlayMessage() {
 document.getElementById('overlay').addEventListener('click', function(){ overlayMessage(); });
 
 window.addEventListener('keydown', function(event){
-	if(event.keyCode === 37 || event.keyCode === 65) {
+	if(event.keyCode === 37 || event.keyCode === 65) { // Left, A
 		let button = document.getElementById('A');
-		processAnswer(button);
+		// Check if overlay is present - then return if so
+		if (isOverlayVisible() !== 'visible') {
+			processAnswer(button);
+		}
 	}
-	if(event.keyCode === 39 || event.keyCode === 66) {
+	if(event.keyCode === 39 || event.keyCode === 66) { // Right, B
 		let button = document.getElementById('B');
-		processAnswer(button);
+		if (isOverlayVisible() !== 'visible') {
+			processAnswer(button);
+		}
+	}
+	if(event.keyCode === 32 && isOverlayVisible()) { // Spacebar
+		overlayMessage()
 	}
 });
 
