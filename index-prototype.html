@@ -185,6 +185,7 @@ function getNewProducts(){
 							console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
 							return;
 						}
+
 						productDataResponse.json().then(function(productData) {
 							processProductData(1, productData);
 						});
@@ -198,6 +199,7 @@ function getNewProducts(){
 							console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
 							return;
 						}
+
 						productDataResponse.json().then(function(productData) {
 							processProductData(2, productData);
 						});
@@ -228,6 +230,7 @@ function processProductData(productNumber, productData) {
 function processAnswer(element) {
 
 	var selection = element.getAttribute('data-product'); // Retrieve whether product A or B is pressed
+	var price1 = atob(document.getElementById('productPrice1').getAttribute('data-price'))/100;
 	var price2 = atob(document.getElementById('productPrice2').getAttribute('data-price'))/100;
 
 	if(selection === 'A' && price1 > price2) {
