@@ -46,6 +46,29 @@
 		cursor: pointer;
 		text-transform: uppercase;
 	}
+
+	.nap-button {
+	    border-radius: 3px;
+	    padding: 20px 70px;
+	    text-align: center;
+	    font-family: GillSans;
+	    font-size: 14px;
+	    line-height: 15px;
+	    text-transform: uppercase;
+	    letter-spacing: 1px;
+	    cursor: pointer;
+	    display: inline-block;
+	    box-sizing: border-box;
+	    transition: color .1s linear;
+			background: #000;
+			color: #FFF;
+			border: 1px solid #000;
+	}
+
+	.button-margin {
+		margin-top: 20px;
+	}
+
 	</style>
 </head>
 <body>
@@ -102,10 +125,10 @@
 
 		<div class='row'>
 			<div class='col-xs-6'>
-				<button id='A' type="button" class="btn btn-primary btn-lg high-low" data-product="A">A</button>
+				<button id='A' type="button" class="nap-button button-margin high-low" data-product="A">A</button>
 			</div>
 			<div class='col-xs-6'>
-				<button id='B' type="button" class="btn btn-primary btn-lg high-low" data-product="B">B</button>
+				<button id='B' type="button" class="nap-button button-margin high-low" data-product="B">B</button>
 			</div>
 		</div>
 
@@ -122,14 +145,7 @@
 
 var score = 0;
 var pids = [];
-var pid;
-var shot;
-var size;
-var imageURL;
-var name;
-var designer;
-var description;
-var price;
+var pid,shot,size,imageURL,name,designer,description,price;
 
 (function(){ // When page is ready, run this code.
 	getNewProducts(); // Start new game
@@ -139,7 +155,7 @@ function getNewProducts(){
 
 	var offset = _getRandomOffset();
 
-	fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids').then(
+	fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids?priceMin=100000&visibility=visible').then(
 		function(pidsResponse) {
 			if (pidsResponse.status !== 200) {
 				console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',pidsResponse.status);
@@ -157,7 +173,6 @@ function getNewProducts(){
 				// Make sure they are not the same
 				while(randomNumbers[0] === randomNumbers[1]) {
 						randomNumbers[0] = _getRandomNumber(0,59);
-						randomNumbers[1] = _getRandomNumber(0,59);
 				}
 
 				pids[0] = pidData.pids[randomNumbers[0]];
@@ -249,7 +264,7 @@ function processAnswer(element) {
 //////////////////////
 
 function _getRandomOffset(){
-	var offset = _getRandomNumber(0,14983);
+	var offset = _getRandomNumber(0,1000);
 	return offset;
 }
 

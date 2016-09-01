@@ -1,6 +1,6 @@
 # TODO
 
-- rewrite this code! :)
+- rewrite this code! :)git
 - Comment code
 - Change high/lower data attributes to become product a and product b
   - Change button HTML
@@ -8,11 +8,14 @@
 
 ## Features
 
-- Use left and right arrow keys for input
-- Get most expensive products to compare
 - Encode price to stop cheating
-- Use a coutdown to see how many can be answered in a time limit
+- Get most expensive products to compare
+- Use left and right arrow keys for input
+
 - Play an airhorn noise when correctly answered
-- Look at streams so that multiple people can vote
 - Leaderboard
+- Use a coutdown to see how many can be answered in a time limit
 - Offline using service workers - Use cached content first then call network
+- Look at streams so that multiple people can vote
+
+# Sequence of development
