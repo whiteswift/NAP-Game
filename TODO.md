@@ -1,10 +1,11 @@
 # TODO
 
 - rewrite this code! :)git
+- Abstract HTML, CSS and JS
 - Comment code
-- Change high/lower data attributes to become product a and product b
-  - Change button HTML
-  - Change instructions answered
+- BUG spacebar when button selected
+- Clicking product goes to NAP site
+- Format the overlay CSS
 
 ## Features
 

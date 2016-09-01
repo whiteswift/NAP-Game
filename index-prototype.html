@@ -88,38 +88,38 @@
 
 		<div class="row">
 			<div class="col-xs-6">
-				<img id='image1' class="pic1 img" src="images/product_image.jpg" alt="Product 1">
+				<img id='productImage1' class="pic1 img" src="images/product_image.jpg" alt="Product 1">
 			</div>
 			<div class="col-xs-6">
-				<img id='image2' class="pic2 img" src="images/product_image.jpg" alt="Product 2">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xs-6">
-				<div id='p1Name'>
-					... Loading Name
-				</div>
-			</div>
-			<div class="col-xs-6">
-				<div id='p2Name'>
-					... Loading Name
-				</div>
+				<img id='productImage2' class="pic2 img" src="images/product_image.jpg" alt="Product 2">
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-xs-6">
-				<div id='p1Description' class="description">
-					... Loading Description
+				<div id='productName1'>
+					... Loading Name
 				</div>
-				<div id="p1Price" data-price=''></div>
 			</div>
 			<div class="col-xs-6">
-				<div id='p2Description' class="description">
+				<div id='productName2'>
+					... Loading Name
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-6">
+				<div id='productDescription1' class="description">
 					... Loading Description
 				</div>
-				<div id="p2Price" data-price=''></div>
+				<div id="productPrice1" data-price=''></div>
+			</div>
+			<div class="col-xs-6">
+				<div id='productDescription2' class="description">
+					... Loading Description
+				</div>
+				<div id="productPrice2" data-price=''></div>
 			</div>
 		</div>
 
@@ -185,21 +185,8 @@ function getNewProducts(){
 							console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
 							return;
 						}
-
 						productDataResponse.json().then(function(productData) {
-							pid = productData.id;
-							shot = productData.images.shots[0];
-							size = productData.images.sizes[0];
-							imageURL = "http://cache.net-a-porter.com/images/products/"+pid+"/"+pid+"_"+shot+"_"+size+".jpg";
-							name = productData.name;
-							designer = productData.brand.name;
-							description = productData.editorsComments;
-							price = btoa(productData.price.amount);
-
-							document.getElementById('p1Name').innerHTML = '<p><b>'+designer+'</b></p><p>'+name+'</p>';
-							document.getElementById('image1').setAttribute('src',imageURL);
-							document.getElementById('p1Price').setAttribute('data-price',price);
-							document.getElementById('p1Description').innerHTML = description;
+							processProductData(1, productData);
 						});
 					}
 				);
@@ -212,19 +199,7 @@ function getNewProducts(){
 							return;
 						}
 						productDataResponse.json().then(function(productData) {
-							pid = productData.id;
-							shot = productData.images.shots[0];
-							size = productData.images.sizes[0];
-							imageURL = "http://cache.net-a-porter.com/images/products/"+pid+"/"+pid+"_"+shot+"_"+size+".jpg";
-							name = productData.name;
-							designer = productData.brand.name;
-							description = productData.editorsComments;
-							price = btoa(productData.price.amount);
-
-							document.getElementById('p2Name').innerHTML = '<p><b>'+designer+'</b></p><p>'+name+'</p>';
-							document.getElementById('image2').setAttribute('src',imageURL);
-							document.getElementById('p2Price').setAttribute('data-price',price);
-							document.getElementById('p2Description').innerHTML = description;
+							processProductData(2, productData);
 						});
 					}
 				);
@@ -234,25 +209,40 @@ function getNewProducts(){
 	);
 }
 
+function processProductData(productNumber, productData) {
+	pid = productData.id;
+	shot = productData.images.shots[0];
+	size = productData.images.sizes[0];
+	imageURL = "http://cache.net-a-porter.com/images/products/"+pid+"/"+pid+"_"+shot+"_"+size+".jpg";
+	name = productData.name;
+	designer = productData.brand.name;
+	description = productData.editorsComments;
+	price = btoa(productData.price.amount);
+
+	document.getElementById('productName' + productNumber).innerHTML = '<p><b>'+designer+'</b></p><p>'+name+'</p>';
+	document.getElementById('productImage' + productNumber).setAttribute('src',imageURL);
+	document.getElementById('productPrice' + productNumber).setAttribute('data-price',price);
+	document.getElementById('productDescription' + productNumber).innerHTML = description;
+}
+
 function processAnswer(element) {
 
 	var selection = element.getAttribute('data-product'); // Retrieve whether product A or B is pressed
-	var price1 = atob(document.getElementById('p1Price').getAttribute('data-price'))/100;
-	var price2 = atob(document.getElementById('p2Price').getAttribute('data-price'))/100;
+	var price2 = atob(document.getElementById('productPrice2').getAttribute('data-price'))/100;
 
 	if(selection === 'A' && price1 > price2) {
-		document.getElementById('overlay-text').innerHTML = ('Correct! Product A: £'+ price1 +'. Product B: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Correct! Product A: £'+ price1 +'. Product B: £'+ price2);
 		_addToScore();
 	}
 	else if(selection === 'B' && price1 < price2) {
-		document.getElementById('overlay-text').innerHTML = ('Correct! Product A: £'+ price1 +'. Product B: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Correct! Product A: £'+ price1 +'. Product B: £'+ price2);
 		_addToScore();
 	}
 	else if (price1 === price2) {
-		document.getElementById('overlay-text').innerHTML = ('Same price! No points though sorry. Product A: £'+ price1 +'. Product B: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('Same price! No points though sorry. Product A: £'+ price1 +'. Product B: £'+ price2);
 	}
 	else {
-		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product A: £'+ price1 +'. Product B: £'+price2);
+		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/>Incorrect! Product A: £'+ price1 +'. Product B: £'+ price2);
 	}
 
 	overlayMessage();
@@ -275,11 +265,6 @@ function _getRandomNumber(min, max) {
 function _addToScore(){
 	score++;
 	document.getElementById('score').innerHTML = score;
-}
-
-// TODO: Need this?
-function _fetchFailed(){
-	console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed');
 }
 
 function overlayMessage() {
@@ -320,7 +305,6 @@ window.addEventListener('keydown', function(event){
 		overlayMessage()
 	}
 });
-
 
 </script>
 </body>
