@@ -1,6 +1,8 @@
-(function(){ // When page is ready, run this code.
-	getNewProducts(); // Start new game
-})();
+// (function(){ // When page is ready, run this code.
+// 	getNewProducts(); // Start new game
+// })();
+
+document.addEventListener("DOMContentLoaded", getNewProducts, false);
 
 var score = 0;
 var pids = [];
@@ -83,9 +85,9 @@ function processProductData(productNumber, productData) {
 
 function processAnswer(element) {
 
-	var selection = element.getAttribute('data-product'); // Retrieve whether product A or B is pressed
-	var price1 = atob(document.getElementById('productPrice1').getAttribute('data-price'))/100;
-	var price2 = atob(document.getElementById('productPrice2').getAttribute('data-price'))/100;
+	var selection = element.dataset.product; // Retrieve whether product A or B is pressed
+	var price1 = atob(document.getElementById('productPrice1').dataset.price)/100;
+	var price2 = atob(document.getElementById('productPrice2').dataset.price)/100;
 
 	if(selection === 'A' && price1 > price2) {
 		document.getElementById('overlay-text').innerHTML = ('ʕ^ᴥ^ʔ<br/><br/>Correct!<br/><br/> Product A: £'+ price1 +' Product B: £'+ price2 + '<br/><br/>');
