@@ -6,65 +6,63 @@ document.addEventListener("DOMContentLoaded", getNewProducts, false);
 
 var score = 0;
 var pids = [];
-var pid,shot,size,imageURL,name,designer,description,price;
+var pid,shot,size,imageURL,name,designer,description,price,randomNumbers;
 
 function getNewProducts(){
 
 	var offset = _getRandomOffset();
 
-	fetch('http://lad-api.net-a-porter.com:80/NAP/GB/60/'+offset+'/pids?priceMin=100000&visibility=visible').then(
-		function(pidsResponse) {
-			if (pidsResponse.status !== 200) {
-				console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',pidsResponse.status);
-				return;
+	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
+	.then((pidsResponse) => {
+		if (pidsResponse.status !== 200) {
+			console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',pidsResponse.status);
+			return;
+		}
+
+		pidsResponse.json().then((pidData) => {
+			// Clear the pids array
+			randomNumbers = []; // [345435, 543545]
+
+			// Get two randomNumbers from data
+			randomNumbers[0] = _getRandomNumber(0,59);
+			randomNumbers[1] = _getRandomNumber(0,59);
+
+			// Make sure they are not the same
+			while(randomNumbers[0] === randomNumbers[1]) {
+					randomNumbers[0] = _getRandomNumber(0,59);
 			}
 
-			pidsResponse.json().then(function(pidData) {
-				// Clear the pids array
-				randomNumbers = []; // [345435, 543545]
+			pids[0] = pidData.pids[randomNumbers[0]];
+			pids[1] = pidData.pids[randomNumbers[1]];
 
-				// Get two randomNumbers from data
-				randomNumbers[0] = _getRandomNumber(0,59);
-				randomNumbers[1] = _getRandomNumber(0,59);
-
-				// Make sure they are not the same
-				while(randomNumbers[0] === randomNumbers[1]) {
-						randomNumbers[0] = _getRandomNumber(0,59);
+			// set off product 1 promise
+			fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[0]}`)
+			.then((productDataResponse) => {
+				if (productDataResponse.status !== 200) {
+					console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
+					return;
 				}
 
-				pids[0] = pidData.pids[randomNumbers[0]];
-				pids[1] = pidData.pids[randomNumbers[1]];
-
-				// set off product 1 promise
-				fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pids[0]).then(
-					function(productDataResponse){
-						if (productDataResponse.status !== 200) {
-							console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
-							return;
-						}
-
-						productDataResponse.json().then(function(productData) {
-							processProductData(1, productData);
-						});
-					}
-				);
-
-				// set off product 2 promise
-				fetch('http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/'+pids[1]).then(
-					function(productDataResponse){
-						if (productDataResponse.status !== 200) {
-							console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
-							return;
-						}
-
-						productDataResponse.json().then(function(productData) {
-							processProductData(2, productData);
-						});
-					}
-				);
+				productDataResponse.json()
+				.then((productData) => {
+					processProductData(1, productData);
+				});
 			});
-		}
-	);
+
+			// set off product 2 promise
+			fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[1]}`)
+			.then((productDataResponse) => {
+				if (productDataResponse.status !== 200) {
+					console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
+					return;
+				}
+
+				productDataResponse.json().then((productData) => {
+					processProductData(2, productData);
+				});
+			});
+		});
+	});
 }
 
 function processProductData(productNumber, productData) {
@@ -140,13 +138,13 @@ function isOverlayVisible() {
 // Event listeners
 //////////////////////
 
-[].forEach.call(document.getElementsByClassName('high-low'), function(element) {
-	element.addEventListener('click', function(){ processAnswer(this); });
+[].forEach.call(document.getElementsByClassName('high-low'), (element) => {
+	element.addEventListener('click', () => { processAnswer(this); });
 });
 
-document.getElementById('overlay').addEventListener('click', function(){ overlayMessage(); });
+document.getElementById('overlay').addEventListener('click', () => { overlayMessage(); });
 
-window.addEventListener('keydown', function(event){
+window.addEventListener('keydown', (event) => {
 	if(event.keyCode === 37 || event.keyCode === 65) { // Left, A
 		let button = document.getElementById('A');
 		// Check if overlay is present - then return if so
