@@ -1,6 +1,4 @@
 # NAP-Game
 
 ## To run
-./server.sh
-
-http://localhost 
+Open [index.html](index.html)

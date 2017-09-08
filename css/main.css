@@ -2,6 +2,11 @@
   height: 40vh;
   max-width: 100%;
 }
+.fixed {
+  position: sticky;
+  width: 100%;
+  bottom: 0;
+}
 #overlay {
   visibility: hidden;
   position: absolute;
