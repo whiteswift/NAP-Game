@@ -1,6 +1,3 @@
-// (function(){ // When page is ready, run this code.
-// 	getNewProducts(); // Start new game
-// })();
 
 document.addEventListener("DOMContentLoaded", getNewProducts, false);
 
@@ -13,55 +10,72 @@ function getNewProducts(){
 	var offset = _getRandomOffset();
 
 	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
-	.then((pidsResponse) => {
-		if (pidsResponse.status !== 200) {
-			console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',pidsResponse.status);
+	.then((response) => {
+		if (response.status !== 200) {
+			console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',response.status);
 			return;
 		}
+		return response.json();
+	})
+	.then((pidData) => {
+		// Clear the pids array
+		randomNumbers = []; // [345435, 543545]
 
-		pidsResponse.json().then((pidData) => {
-			// Clear the pids array
-			randomNumbers = []; // [345435, 543545]
+		// Get two randomNumbers from data
+		randomNumbers[0] = _getRandomNumber(0,59);
+		randomNumbers[1] = _getRandomNumber(0,59);
 
-			// Get two randomNumbers from data
+		// Make sure they are not the same
+		while(randomNumbers[0] === randomNumbers[1]) {
 			randomNumbers[0] = _getRandomNumber(0,59);
-			randomNumbers[1] = _getRandomNumber(0,59);
+		}
 
-			// Make sure they are not the same
-			while(randomNumbers[0] === randomNumbers[1]) {
-				randomNumbers[0] = _getRandomNumber(0,59);
-			}
+		pids[0] = pidData.pids[randomNumbers[0]];
+		pids[1] = pidData.pids[randomNumbers[1]];
 
-			pids[0] = pidData.pids[randomNumbers[0]];
-			pids[1] = pidData.pids[randomNumbers[1]];
+		return pids;
+	})
+	.then((pids) => {
+		// promise.all to functions
+		
+		let fetchPidDetailsPromises = [];
+		for (var i = 0; i < 2; i++) {
+			fetchPidDetailsPromises[i] = fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[i]}`);
+		}
 
-			// set off product 1 promise
-			fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[0]}`)
-			.then((productDataResponse) => {
-				if (productDataResponse.status !== 200) {
-					console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
-					return;
-				}
-
-				productDataResponse.json()
-				.then((productData) => {
-					processProductData(1, productData);
-				});
-			});
-
-			// set off product 2 promise
-			fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[1]}`)
-			.then((productDataResponse) => {
-				if (productDataResponse.status !== 200) {
-					console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
-					return;
-				}
-
-				productDataResponse.json().then((productData) => {
-					processProductData(2, productData);
-				});
-			});
+		Promise.all(fetchPidDetailsPromises)
+		.then(values => { 
+			console.log('values', values);
+		}).catch(error => { 
+			console.log(error)
 		});
+
+		// set off product 1 promise
+		// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[0]}`)
+		// .then((productDataResponse) => {
+		// 	if (productDataResponse.status !== 200) {
+		// 		console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
+		// 		return;
+		// 	}
+
+		// 	productDataResponse.json()
+		// 	.then((productData) => {
+		// 		processProductData(1, productData);
+		// 	});
+		// });
+
+		// // set off product 2 promise
+		// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[1]}`)
+		// .then((productDataResponse) => {
+		// 	if (productDataResponse.status !== 200) {
+		// 		console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
+		// 		return;
+		// 	}
+
+		// 	productDataResponse.json().then((productData) => {
+		// 		processProductData(2, productData);
+		// 	});
+		// });
 	});
 }
 
