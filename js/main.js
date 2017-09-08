@@ -29,7 +29,7 @@ function getNewProducts(){
 
 			// Make sure they are not the same
 			while(randomNumbers[0] === randomNumbers[1]) {
-					randomNumbers[0] = _getRandomNumber(0,59);
+				randomNumbers[0] = _getRandomNumber(0,59);
 			}
 
 			pids[0] = pidData.pids[randomNumbers[0]];
@@ -139,7 +139,7 @@ function isOverlayVisible() {
 
 [].forEach.call(document.getElementsByClassName('high-low'), (element) => {
 	element.addEventListener('click', () => { 
-		let selection = element.getAttribute('id');
+		let selection = element.getAttribute('id'); // 'A' or 'B'
 		processAnswer(selection); 
 	});
 });
