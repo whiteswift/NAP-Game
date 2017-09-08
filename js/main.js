@@ -81,25 +81,24 @@ function processProductData(productNumber, productData) {
 	document.getElementById('productDescription' + productNumber).innerHTML = description;
 }
 
-function processAnswer(element) {
-
-	var selection = element.dataset.product; // Retrieve whether product A or B is pressed
+function processAnswer(selection) {
+	
 	var price1 = atob(document.getElementById('productPrice1').dataset.price)/100;
 	var price2 = atob(document.getElementById('productPrice2').dataset.price)/100;
 
 	if(selection === 'A' && price1 > price2) {
-		document.getElementById('overlay-text').innerHTML = ('ʕ^ᴥ^ʔ<br/><br/>Correct!<br/><br/> Product A: £'+ price1 +' Product B: £'+ price2 + '<br/><br/>');
+		document.getElementById('overlay-text').innerHTML = ('✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £'+ price1 +' Product B: £'+ price2 + '<br/><br/>');
 		_addToScore();
 	}
 	else if(selection === 'B' && price1 < price2) {
-		document.getElementById('overlay-text').innerHTML = ('ʕ^ᴥ^ʔ<br/><br/>Correct!<br/><br/> Product A: £'+ price1 +'. Product B: £'+ price2 + '<br/><br/>');
+		document.getElementById('overlay-text').innerHTML = ('✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £'+ price1 +'. Product B: £'+ price2 + '<br/><br/>');
 		_addToScore();
 	}
 	else if (price1 === price2) {
 		document.getElementById('overlay-text').innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £'+ price1 +'. Product B: £'+ price2 + '<br/><br/>');
 	}
 	else {
-		document.getElementById('overlay-text').innerHTML = ('ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/><br/>Incorrect!<br/><br/> Product A: £'+ price1 +'. Product B: £'+ price2 + '<br/><br/>');
+		document.getElementById('overlay-text').innerHTML = ('⚡️ ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/><br/>Incorrect!<br/><br/> Product A: £'+ price1 +'. Product B: £'+ price2 + '<br/><br/>');
 	}
 
 	overlayMessage();
@@ -139,23 +138,24 @@ function isOverlayVisible() {
 //////////////////////
 
 [].forEach.call(document.getElementsByClassName('high-low'), (element) => {
-	element.addEventListener('click', () => { processAnswer(this); });
+	element.addEventListener('click', () => { 
+		let selection = element.getAttribute('id');
+		processAnswer(selection); 
+	});
 });
 
 document.getElementById('overlay').addEventListener('click', () => { overlayMessage(); });
 
 window.addEventListener('keydown', (event) => {
 	if(event.keyCode === 37 || event.keyCode === 65) { // Left, A
-		let button = document.getElementById('A');
 		// Check if overlay is present - then return if so
 		if (isOverlayVisible() !== 'visible') {
-			processAnswer(button);
+			processAnswer('A');
 		}
 	}
 	if(event.keyCode === 39 || event.keyCode === 66) { // Right, B
-		let button = document.getElementById('B');
 		if (isOverlayVisible() !== 'visible') {
-			processAnswer(button);
+			processAnswer('B');
 		}
 	}
 	if(event.keyCode === 32 && isOverlayVisible()) { // Spacebar
