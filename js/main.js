@@ -40,15 +40,25 @@ function getNewProducts(){
 		
 		let fetchPidDetailsPromises = [];
 		for (var i = 0; i < 2; i++) {
-			fetchPidDetailsPromises[i] = fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[i]}`);
+			fetchPidDetailsPromises.push(fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[i]}`));
 		}
 
 		Promise.all(fetchPidDetailsPromises)
-		.then(values => { 
-			console.log('values', values);
-		}).catch(error => { 
+		.then(responses => { 
+			// return responses.json();
+			responses.forEach(processPidDetails)
+		})
+		.catch(error => { 
 			console.log(error)
 		});
+
+		function processPidDetails(response) {
+			// console.log(response);
+			response.json()
+			.then(data => {
+				console.log(data)
+			})
+		}
 
 		// set off product 1 promise
 		// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[0]}`)
