@@ -20,19 +20,18 @@ function getNewProducts(){
 	})
 	.then((pidData) => {
 		// Clear the pids array
-		randomNumbers = []; // [345435, 543545]
+		randomNumbers = []; 
+		
+		for (var i = 0; i < 2; i++) {
+			
+			do {
+				// Get two randomNumbers from data
+				randomNumbers[i] = _getRandomNumber(0,59);
+			}
+			while(randomNumbers[0] === randomNumbers[1]); // Make sure they are not the same
 
-		// Get two randomNumbers from data
-		randomNumbers[0] = _getRandomNumber(0,59);
-		randomNumbers[1] = _getRandomNumber(0,59);
-
-		// Make sure they are not the same
-		while(randomNumbers[0] === randomNumbers[1]) {
-			randomNumbers[0] = _getRandomNumber(0,59);
+			pids[i] = pidData.pids[randomNumbers[i]];
 		}
-
-		pids[0] = pidData.pids[randomNumbers[0]];
-		pids[1] = pidData.pids[randomNumbers[1]];
 
 		return pids;
 	})
