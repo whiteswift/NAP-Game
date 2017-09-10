@@ -1,5 +1,7 @@
 # TODO
 
+- Attach the product number 1/2 to the promise?
+
 - rewrite this code! :)git
 - Abstract HTML, CSS and JS
 - Comment code

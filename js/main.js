@@ -7,6 +7,7 @@ var pid,shot,size,imageURL,name,designer,description,price,randomNumbers;
 
 function getNewProducts(){
 
+	resetProducts();
 	var offset = _getRandomOffset();
 
 	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
@@ -45,51 +46,20 @@ function getNewProducts(){
 
 		Promise.all(fetchPidDetailsPromises)
 		.then(responses => { 
-			// return responses.json();
-			responses.forEach(processPidDetails)
+			responses.forEach((response) => {
+				response.json()
+				.then((jsonProductData) => {
+					processProductData(jsonProductData)
+				});
+			});
 		})
 		.catch(error => { 
 			console.log(error)
 		});
-
-		function processPidDetails(response) {
-			// console.log(response);
-			response.json()
-			.then(data => {
-				console.log(data)
-			})
-		}
-
-		// set off product 1 promise
-		// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[0]}`)
-		// .then((productDataResponse) => {
-		// 	if (productDataResponse.status !== 200) {
-		// 		console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
-		// 		return;
-		// 	}
-
-		// 	productDataResponse.json()
-		// 	.then((productData) => {
-		// 		processProductData(1, productData);
-		// 	});
-		// });
-
-		// // set off product 2 promise
-		// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[1]}`)
-		// .then((productDataResponse) => {
-		// 	if (productDataResponse.status !== 200) {
-		// 		console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed',productDataResponse.status);
-		// 		return;
-		// 	}
-
-		// 	productDataResponse.json().then((productData) => {
-		// 		processProductData(2, productData);
-		// 	});
-		// });
 	});
 }
 
-function processProductData(productNumber, productData) {
+function processProductData(productData) {
 	pid = productData.id;
 	shot = productData.images.shots[0];
 	size = productData.images.sizes[0];
@@ -99,10 +69,23 @@ function processProductData(productNumber, productData) {
 	description = productData.editorsComments;
 	price = btoa(productData.price.amount);
 
-	document.getElementById('productName' + productNumber).innerHTML = '<p><b>'+designer+'</b></p><p>'+name+'</p>';
-	document.getElementById('productImage' + productNumber).setAttribute('src',imageURL);
-	document.getElementById('productPrice' + productNumber).setAttribute('data-price',price);
-	document.getElementById('productDescription' + productNumber).innerHTML = description;
+	let firstProduct = document.getElementById('productImage1')
+
+	if (firstProduct.getAttribute('data-is-set') !== 'true') {
+		setProductDetailsInDom(1, productData); // set the first product
+		firstProduct.setAttribute('data-is-set', 'true'); // set the data-is-set attribute
+	} else {
+		setProductDetailsInDom(2, productData);
+		// Not actually needed, but this would be set here
+		// secondProduct.setAttribute('data-is-set', 'true'); // set the data-is-set attribute
+	}
+}
+
+function setProductDetailsInDom(productNumber, productData) {
+	document.getElementById(`productName${productNumber}`).innerHTML = `<p><b>${designer}</b></p><p>${name}</p>`;
+	document.getElementById(`productImage${productNumber}`).setAttribute('src',imageURL);
+	document.getElementById(`productPrice${productNumber}`).setAttribute('data-price',price);
+	document.getElementById(`productDescription${productNumber}`).innerHTML = description;
 }
 
 function processAnswer(selection) {
@@ -125,7 +108,7 @@ function processAnswer(selection) {
 		document.getElementById('overlay-text').innerHTML = ('⚡️ ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/><br/>Incorrect!<br/><br/> Product A: £'+ price1 +'. Product B: £'+ price2 + '<br/><br/>');
 	}
 
-	overlayMessage();
+	toggleOverlayMessage();
 	getNewProducts(); // Get new products again
 }
 
@@ -147,7 +130,7 @@ function _addToScore(){
 	document.getElementById('score').innerHTML = score;
 }
 
-function overlayMessage() {
+function toggleOverlayMessage() {
 	el = document.getElementById("overlay");
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
@@ -155,6 +138,13 @@ function overlayMessage() {
 function isOverlayVisible() {
 	el = document.getElementById("overlay");
 	return el.style.visibility;
+}
+
+function resetProducts() {
+	let products = document.querySelectorAll('.product');
+	products.forEach((product) => {
+		product.setAttribute('data-is-set', 'false');
+	});
 }
 
 //////////////////////
@@ -168,7 +158,7 @@ function isOverlayVisible() {
 	});
 });
 
-document.getElementById('overlay').addEventListener('click', () => { overlayMessage(); });
+document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
 
 window.addEventListener('keydown', (event) => {
 	if(event.keyCode === 37 || event.keyCode === 65) { // Left, A
@@ -183,6 +173,6 @@ window.addEventListener('keydown', (event) => {
 		}
 	}
 	if(event.keyCode === 32 && isOverlayVisible()) { // Spacebar
-		overlayMessage()
+		toggleOverlayMessage()
 	}
 });
