@@ -12,6 +12,8 @@
 
 Nice to have
 - Intro screen with instructions
+- Scoreboard in local storage
+- Keypress to get scores on overlay
 
 ## Standard TODO
 - Attach the product number 1/2 to the promise?
