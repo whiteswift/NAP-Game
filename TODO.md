@@ -1,7 +1,20 @@
-# TODO
+# NAP TODO
 
+- Make hearts decrease when incorrect
+- Make carousel
+    - Make left product stay when you guess
+- Gifs on button press
+- Make feedback loop when keyboard is pressed
+- Display "You chose higher" on overlay
+- Make overlay opaque
+- Don't show price if incorrect
+- Sounds for interactions
+
+Nice to have
+- Intro screen with instructions
+
+## Standard TODO
 - Attach the product number 1/2 to the promise?
-
 - rewrite this code! :)git
 - Abstract HTML, CSS and JS
 - Comment code

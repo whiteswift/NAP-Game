@@ -1,5 +1,14 @@
+.container {
+  height: 100vh;
+}
+#score-container {
+  float:right;
+}
+.scoring {
+  font-size: 2em;
+}
 .img {
-  height: 40vh;
+  height: 60vh;
   max-width: 100%;
 }
 .fixed {
@@ -23,4 +32,11 @@
 #overlay-text {
   font-size: 3vw;
 }
-
+.centre {
+  text-align: center;
+}
+.cta-buttons button {
+  height: 8vh;
+  font-size: 3vh;
+  cursor: pointer;
+}

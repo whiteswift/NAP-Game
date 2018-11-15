@@ -1,71 +1,89 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Higher or Lower</title>
+	<title>nap's price is right</title>
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> <!-- To stop pound signs showing up like weird characters -->
+	<!-- <link rel="stylesheet" href="css/glide.core.min.css"> -->
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<link rel="icon" href="favicon.png">
 </head>
+
 <body>
 
 	<div class="container">
 		<div class="row">
-			<div class="col">
-				<h1>Higher or Lower game</h1>
-				<h4>Which product costs more?</h4>
+
+			<div class="col centre">
+				<h1>nap's price is right</h1>
 			</div>
+
 		</div>
-		<div class='row'>
+		<div class="row scoring">
+			<div id='lives' class="col">
+				❤️❤️🖤
+			</div>
 			<div class="col">
-				<div class="badge badge-info">
+				<div id="score-container" class="badge badge-danger">
 					SCORE <span id='score'>0</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="row">
+		<div class='row'>
 			<div class="col">
+
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col centre">
 				<img id='productImage1' data-is-set='' class="product pic1 img" src="images/product_image.jpg" alt="Product 1">
 			</div>
-			<div class="col">
+			<div class="col centre">
 				<img id='productImage2' data-is-set='' class="product pic2 img" src="images/product_image.jpg" alt="Product 2">
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col">
-				<div id='productName1'>
-					... Loading Name
-				</div>
+		<!-- <div class="glide">
+			<div class="glide__track" data-glide-el="track">
+				<ul class="glide__slides">
+					<li class="glide__slide">
+						<img id='productImage1' data-is-set='' class="product pic1 img" src="images/product_image.jpg" alt="Product 1">
+					</li>
+					<li class="glide__slide">
+						<img id='productImage2' data-is-set='' class="product pic2 img" src="images/product_image.jpg" alt="Product 2">
+					</li>
+					<li class="glide__slide">2</li>
+				</ul>
 			</div>
-			<div class="col">
-				<div id='productName2'>
-					... Loading Name
-				</div>
-			</div>
-		</div>
+		</div> -->
 
 		<div class="row">
 			<div class="col">
-				<div id='productDescription1' class="description">
+				<!-- <div id='productDescription1' class="description">
 					... Loading Description
-				</div>
+				</div> -->
 				<div id="productPrice1" data-price=''></div>
 			</div>
 			<div class="col">
-				<div id='productDescription2' class="description">
+				<!-- <div id='productDescription2' class="description">
 					... Loading Description
-				</div>
+				</div> -->
 				<div id="productPrice2" data-price=''></div>
 			</div>
 		</div>
 
-		<div class='row fixed'>
+		<div class='row fixed cta-buttons'>
 			<div class='col'>
-				<button id='A' type="button" class="btn btn-dark btn-block high-low" data-product="A">A</button>
+				<button id='higher' type="button" class="btn btn-dark btn-block high-low">Higher</button>
 			</div>
 			<div class='col'>
-				<button id='B' type="button" class="btn btn-dark btn-block high-low" data-product="B">B</button>
+				<button id='lower' type="button" class="btn btn-dark btn-block high-low">Lower</button>
+			</div>
+			<div class='col'>
+				<button id='bank' type="button" class="btn btn-dark btn-block high-low">Bank</button>
 			</div>
 		</div>
 
@@ -73,11 +91,16 @@
 
 	<div id="overlay">
 		<div>
-	    	<p id='overlay-text'>Loading message...</p>
+			<p id='overlay-text'>Loading message...</p>
 			<button class='btn btn-success'>Dismiss</button>
 		</div>
- 	</div>
+	</div>
 
 	<script src="js/main.js"></script>
+	<!-- <script src="js/glide.js"></script> -->
+	<!-- <script>
+		new Glide('.glide').mount()
+	</script> -->
 </body>
+
 </html>
