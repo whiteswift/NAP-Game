@@ -40,3 +40,6 @@
   font-size: 3vh;
   cursor: pointer;
 }
+.glide__slide {
+  text-align: center;
+}
