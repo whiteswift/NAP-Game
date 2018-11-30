@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", start, false);
 // document.addEventListener("DOMContentLoaded", getNewProducts, false);
 
 document.lives = 3;
+document.activeProduct = 0;
+document.comparingProduct = 1;
+
 var score = 0;
 var pids = [];
 var pid, shot, size, imageURL, name, designer, description, price, randomNumbers;
@@ -126,28 +129,34 @@ function setProductDetailsInDom(productDetails, productNumber) {
 function processAnswer(selection) {
 	// Store current product being tested in window or localstorage?
 
-	var price1 = document.getElementById('productPrice1').dataset.price / 100;
-	var price2 = document.getElementById('productPrice2').dataset.price / 100;
+	var activeProductPrice = document.getElementById(`product${document.activeProduct}`).dataset.price / 100;
+	var comparingProductPrice = document.getElementById(`product${document.comparingProduct}`).dataset.price / 100;
+
 	let overlayText = document.getElementById('overlay-text');
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
-		overlayText.innerHTML = ('<br/><br/>BANK!<br/><br/>');
+		overlayText.innerHTML = (`<img src='./images/bank/${_getRandomNumber(1, 3)}.png'/><br/><br/>BANK!<br/><br/>`);
+		bankPoints();
 	}
-	else if (selection === higher && price1 > price2) {
-		overlayText.innerHTML = ('✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £' + price1 + ' Product B: £' + price2 + '<br/><br/>');
+	else if (selection === higher && activeProductPrice > comparingProductPrice) {
+		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/>✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £${activeProductPrice} Product B: £${comparingProductPrice}<br/><br/>`);
 		addToScore();
+
+		// nextProduct();
 	}
-	else if (selection === lower && price1 < price2) {
-		overlayText.innerHTML = ('✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £' + price1 + '. Product B: £' + price2 + '<br/><br/>');
+	else if (selection === lower && activeProductPrice < comparingProductPrice) {
+		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/>✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
 		addToScore();
+		// nextProduct();
 	}
-	else if (price1 === price2) {
-		overlayText.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + price1 + '. Product B: £' + price2 + '<br/><br/>');
+	else if (activeProductPrice === comparingProductPrice) {
+		overlayText.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + activeProductPrice + '. Product B: £' + comparingProductPrice + '<br/><br/>');
 	}
 	else {
-		overlayText.innerHTML = ('⚡️ ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/><br/>Incorrect!<br/><br/> Product A: £' + price1 + '. Product B: £' + price2 + '<br/><br/>');
+		overlayText.innerHTML = (`<img src='./images/lose/${_getRandomNumber(1, 4)}.png'/>⚡️ ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
 		loseALife()
+		// nextProduct();
 	}
 
 	toggleOverlayMessage();
@@ -174,24 +183,24 @@ function addToScore() {
 }
 
 function loseALife() {
-	debugger;
 	const lives = document.getElementById('lives');
 
 	// TODO: FIX THIS SWITCH Look in yos
 	switch (document.lives) {
-		case document.lives <= 1:
-			gameOver();
-			break;
-		case document.lives === 3:
+		case 3:
 			lives.innerHTML = '❤️️❤️️🖤️️';
 			break;
-		case document.lives === 2:
+		case 2:
 			lives.innerHTML = '❤️️🖤️️🖤️️';
 			break;
+		case 1:
+			lives.innerHTML = '🖤️️🖤️️🖤️️';
+			gameOver();
+			break;
 		default:
-
 			break;
 	}
+
 	document.lives = --document.lives;
 }
 
@@ -212,9 +221,13 @@ function resetProducts() {
 	});
 }
 
+function bankPoints() {
+	console.log('Bank Points FUNCTION');
+}
+
 function gameOver() {
 	// modal and gif with score
-	console.log('GAME OVER');
+	console.log('GAME OVER FUNCTION');
 
 }
 
@@ -235,22 +248,24 @@ function gameOver() {
 });
 
 document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
+document.getElementById('bank').addEventListener('click', () => { processAnswer('bank'); });
 
 window.addEventListener('keydown', (event) => {
 	if (event.keyCode === 38) { // Up
+		event.preventDefault();
 		// Check if overlay is present - then return if so
 		if (isOverlayVisible() !== 'visible') {
-			// processAnswer(higher);
-			loseALife();
+			processAnswer(higher);
 		}
 	}
 	if (event.keyCode === 40) { // Right, B
+		event.preventDefault();
 		if (isOverlayVisible() !== 'visible') {
-			// processAnswer(lower);
-			loseALife();
+			processAnswer(lower);
 		}
 	}
 	if (event.keyCode === 32 && isOverlayVisible()) { // Spacebar
+		event.preventDefault();
 		toggleOverlayMessage()
 	}
 });

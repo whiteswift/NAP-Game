@@ -1,15 +1,20 @@
 # NAP TODO
 
-- Make hearts decrease when incorrect -
+- Bank points function
+- Handle active and comparing products in processAnswer()
+X- Make feedback loop when keyboard is pressed
+    - Display "You chose higher" on overlay
+    - Gifs on button press
+X- Make hearts decrease when incorrect -
 - Make carousel
+    X- Initial translate animation
     - How to make ticker move for each answer - javascript?
     - Make left product stay when you guess - what if the product costs a bomb and each answer after is easy?
-- Gifs on button press
-- Make feedback loop when keyboard is pressed
-- Display "You chose higher" on overlay
+
 - Make overlay opaque
 - Don't show price if incorrect
 - Sounds for interactions
+    - matron / nanny / paper horn
 - Is offset needed? 
 
 Nice to have
