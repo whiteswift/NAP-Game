@@ -1,3 +1,5 @@
+@import './vars.css';
+
 .container {
   height: 100vh;
 }
@@ -42,9 +44,9 @@
 
 .img {
   /* height: 60vh; */
-    /* max-width: 100%; */
-    width: 438px;
-    height: 657px;
+  /* max-width: 100%; */
+  width: 438px;
+  height: 657px;
 }
 
 .product-container {
@@ -61,11 +63,13 @@
   animation: product-ticker 1.5s 0.2s ease forwards;
 }           /* name        timing delay type forwards */
 
+
+
 @keyframes product-ticker {
   from {
-      transform: translateX(0);
+    transform: translateX(0);
   }
   to {
-      transform: translateX(-438px);
+    transform: translateX(var(--slide-distance));
   }
 }
