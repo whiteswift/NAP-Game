@@ -135,8 +135,12 @@ transform: translateY(-156px)
 }
 
 .sf-logo__spin--spinning {
-animation: sf-spin-middle .5s 1.8s ease forwards,sf-spin-end .5s 4.8s ease forwards
+animation: 
+sf-spin-middle .5s 1.8s ease forwards,
+sf-spin-end .5s 4.8s ease forwards
 }
+/* Name / duration /  */
+
 
 .sf-logo__spin-eip--spinning {
 animation: sf-spin-start .5s 1.8s ease forwards,sf-spin-middle .5s 4.8s ease forwards,sf-spin-end .5s 7.8s ease
