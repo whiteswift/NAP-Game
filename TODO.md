@@ -1,14 +1,16 @@
 # NAP TODO
 
-- Make hearts decrease when incorrect
+- Make hearts decrease when incorrect -
 - Make carousel
-    - Make left product stay when you guess
+    - How to make ticker move for each answer - javascript?
+    - Make left product stay when you guess - what if the product costs a bomb and each answer after is easy?
 - Gifs on button press
 - Make feedback loop when keyboard is pressed
 - Display "You chose higher" on overlay
 - Make overlay opaque
 - Don't show price if incorrect
 - Sounds for interactions
+- Is offset needed? 
 
 Nice to have
 - Intro screen with instructions

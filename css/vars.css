@@ -1,4 +1,6 @@
 :root {
     --image-width: -438px;
+    --gutter-spacing: -4px;
     --slide-distance: -442px;
+    --ticker-width: 4420px;
 }

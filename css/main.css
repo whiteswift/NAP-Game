@@ -51,19 +51,18 @@
 
 .product-container {
   overflow: hidden;
+  width: 884px;
 }
 .product__image {
   display: inline-block;
 }
 
 .ticker-wrapper {
-  width: 1770px;
+  width: var(--ticker-width);
 }
 .ticking {
   animation: product-ticker 1.5s 0.2s ease forwards;
 }           /* name        timing delay type forwards */
-
-
 
 @keyframes product-ticker {
   from {
@@ -71,5 +70,6 @@
   }
   to {
     transform: translateX(var(--slide-distance));
+    /* transform: translateX(calc(2 * var(--slide-distance))); */
   }
 }
