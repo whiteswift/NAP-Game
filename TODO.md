@@ -2,6 +2,9 @@
 
 - Bank points function
 - Handle active and comparing products in processAnswer()
+- nextProduct()
+- Button click event listeners
+
 X- Make feedback loop when keyboard is pressed
     - Display "You chose higher" on overlay
     - Gifs on button press

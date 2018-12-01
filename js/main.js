@@ -136,46 +136,35 @@ function processAnswer(selection) {
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
-		overlayText.innerHTML = (`<img src='./images/bank/${_getRandomNumber(1, 3)}.png'/><br/><br/>BANK!<br/><br/>`);
+		overlayText.innerHTML = (`<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>BANK!<br/>`);
 		bankPoints();
 	}
 	else if (selection === higher && activeProductPrice > comparingProductPrice) {
-		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/>✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £${activeProductPrice} Product B: £${comparingProductPrice}<br/><br/>`);
+		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/><br/>Correct!<br/> Product A: £${activeProductPrice} Product B: £${comparingProductPrice}<br/><br/>`);
 		addToScore();
-
-		// nextProduct();
 	}
 	else if (selection === lower && activeProductPrice < comparingProductPrice) {
-		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/>✨ʕ^ᴥ^ʔ✨<br/><br/>Correct!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
+		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/><br/>Correct!<br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
 		addToScore();
-		// nextProduct();
 	}
 	else if (activeProductPrice === comparingProductPrice) {
 		overlayText.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + activeProductPrice + '. Product B: £' + comparingProductPrice + '<br/><br/>');
 	}
 	else {
-		overlayText.innerHTML = (`<img src='./images/lose/${_getRandomNumber(1, 4)}.png'/>⚡️ ʕノ•ᴥ•ʔノ ︵ ┻━┻ <br/><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
-		loseALife()
-		// nextProduct();
+		overlayText.innerHTML = (`<img src='./images/lose/${_getRandomNumber(1, 4)}.png'/><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
+		loseALife();
 	}
 
 	toggleOverlayMessage();
+	nextProduct();
 	// Reload the page to start a new game
 	// getNewProducts(); // Get new products again
 }
 
-//////////////////////
-// Helper functions
-//////////////////////
 
-function _getRandomOffset() {
-	var offset = _getRandomNumber(0, 1000);
-	return offset;
-}
-
-function _getRandomNumber(min, max) {
-	return Math.floor(Math.random() * (max - min) + min);
-}
+//////////////////////
+// Game functions
+//////////////////////
 
 function addToScore() {
 	score++;
@@ -204,6 +193,10 @@ function loseALife() {
 	document.lives = --document.lives;
 }
 
+function nextProduct() {
+	console.log('NEXT PRODUCT');
+}
+
 function toggleOverlayMessage() {
 	el = document.getElementById("overlay");
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
@@ -229,6 +222,19 @@ function gameOver() {
 	// modal and gif with score
 	console.log('GAME OVER FUNCTION');
 
+}
+
+//////////////////////
+// Helper functions
+//////////////////////
+
+function _getRandomOffset() {
+	var offset = _getRandomNumber(0, 1000);
+	return offset;
+}
+
+function _getRandomNumber(min, max) {
+	return Math.floor(Math.random() * (max - min) + min);
 }
 
 //////////////////////
