@@ -33,7 +33,12 @@
 #overlay-text img {
   max-width: 50vmin;
 }
-
+#new-game {
+  background: maroon;
+  color: white;
+  width: 30vmin;
+  height: 10vmin;
+}
 .centre {
   text-align: center;
 }
@@ -42,7 +47,6 @@
   font-size: 3vh;
   cursor: pointer;
 }
-
 
 .img {
   /* height: 60vh; */
@@ -59,7 +63,10 @@
 .product__image {
   display: inline-block;
 }
-
+/* FOR DEBUGGING */
+.product[data-is-active^="true"] {
+border: 1px solid red;
+}
 .ticker-wrapper {
   width: var(--ticker-width);
 }

@@ -9,12 +9,13 @@ document.comparingProduct = 1;
 var score = 0;
 var pids = [];
 var pid, shot, size, imageURL, name, designer, description, price, randomNumbers;
+
 const higher = 'higher';
 const lower = 'lower';
 const bank = 'bank';
 
 function start() {
-	resetProducts();
+	// resetProducts();
 	const offset = _getRandomOffset();
 	// getNewProducts(offset)
 	getNewMockProducts(offset);
@@ -118,6 +119,7 @@ function setProductDetailsInDom(productDetails, productNumber) {
 	// TODO: Uncomment this line when online
 	// imageURL = "http://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
 
+	// COmment for offline
 	imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
 
 	price = productDetails.price.amount;
@@ -136,7 +138,7 @@ function processAnswer(selection) {
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
-		overlayText.innerHTML = (`<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>BANK!<br/>`);
+		overlayText.innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>BANK!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 		bankPoints();
 	}
 	else if (selection === higher && activeProductPrice > comparingProductPrice) {
@@ -195,6 +197,9 @@ function loseALife() {
 
 function nextProduct() {
 	console.log('NEXT PRODUCT');
+	// Do something with document.activeProduct and document.comparingProduct
+	// do sliding animation
+	// set data-is-active on .product img
 }
 
 function toggleOverlayMessage() {
@@ -208,20 +213,45 @@ function isOverlayVisible() {
 }
 
 function resetProducts() {
-	let products = document.querySelectorAll('.product');
-	products.forEach((product) => {
-		product.setAttribute('data-is-set', 'false');
-	});
+	// let products = document.querySelectorAll('.product');
+	// products.forEach((product) => {
+	// 	product.setAttribute('data-is-set', 'false');
+	// });
 }
 
 function bankPoints() {
 	console.log('Bank Points FUNCTION');
+	saveScore(score);
+	// showNewGame();
 }
 
 function gameOver() {
 	// modal and gif with score
 	console.log('GAME OVER FUNCTION');
+	saveScore(0);
 
+	document.getElementById('overlay-text').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+}
+
+
+function saveScore(points) {
+	// get team scores array from localstorage if any
+	let scores = JSON.parse(window.localStorage.getItem('scores'));
+
+	if (!scores) scores = [];
+	// make team object to scores array
+	scores.push(points)
+	// push new score to array
+
+	try {
+		window.localStorage.setItem('scores', JSON.stringify(scores));
+	} catch (error) { }
+}
+
+function clearScores() {
+	try {
+		window.localStorage.removeItem('scores');
+	} catch (error) { console.log }
 }
 
 //////////////////////
@@ -246,16 +276,17 @@ function _getRandomNumber(min, max) {
 	// TODO: FIx and uncomment these lines
 	// Make this work by getting active and comparative product
 
-	// element.addEventListener('click', () => {
-	// 	let selection = element.getAttribute('id'); // 'A' or 'B';
-	// 	// Pass in what the actuve product and question product is 
-	// 	processAnswer(selection);
-	// });
+	element.addEventListener('click', () => {
+		let selection = element.getAttribute('id');
+		// Pass in what the actuve product and question product is 
+		processAnswer(selection);
+	});
 });
 
 document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
 document.getElementById('bank').addEventListener('click', () => { processAnswer('bank'); });
 
+// TODO: Make a switch
 window.addEventListener('keydown', (event) => {
 	if (event.keyCode === 38) { // Up
 		event.preventDefault();
@@ -264,10 +295,16 @@ window.addEventListener('keydown', (event) => {
 			processAnswer(higher);
 		}
 	}
-	if (event.keyCode === 40) { // Right, B
+	if (event.keyCode === 40) { // Right
 		event.preventDefault();
 		if (isOverlayVisible() !== 'visible') {
 			processAnswer(lower);
+		}
+	}
+	if (event.keyCode === 66) { // B
+		event.preventDefault();
+		if (isOverlayVisible() !== 'visible') {
+			processAnswer(bank);
 		}
 	}
 	if (event.keyCode === 32 && isOverlayVisible()) { // Spacebar
