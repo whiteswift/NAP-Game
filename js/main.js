@@ -2,13 +2,16 @@
 document.addEventListener("DOMContentLoaded", start, false);
 // document.addEventListener("DOMContentLoaded", getNewProducts, false);
 
-document.lives = 3;
-document.activeProduct = 0;
-document.comparingProduct = 1;
+
+// document.activeProduct = 0;
+// document.comparingProduct = 1;
 
 var score = 0;
 var pids = [];
-var pid, shot, size, imageURL, name, designer, description, price, randomNumbers;
+var pid, shot, size, imageURL, name, designer, description, price, randomNumbers, lives, turn;
+
+lives = 3;
+turn = 0;
 
 const higher = 'higher';
 const lower = 'lower';
@@ -30,6 +33,7 @@ function getNewMockProducts(offset) {
 }
 
 function getNewProducts(offset) {
+	// TODO: Change this to just get data from summaries api
 
 	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
 		.then((response) => {
@@ -94,19 +98,6 @@ function processProductData(productData) {
 		// console.log('count', count); // 0,1,2,3		
 		setProductDetailsInDom(productData.summaries[productNumber], count);
 	})
-
-	// Checking if produyct 1 is set - is not needed anymore. details in DOM will handle it
-
-	// let firstProduct = document.getElementById('product1')
-
-	// if (firstProduct.getAttribute('data-is-set') !== 'true') {
-	// 	setProductDetailsInDom(1, productData); // set the first product
-	// 	firstProduct.setAttribute('data-is-set', 'true'); // set the data-is-set attribute
-	// } else {
-	// 	setProductDetailsInDom(2, productData);
-	// 	// Not actually needed, but this would be set here
-	// 	// secondProduct.setAttribute('data-is-set', 'true'); // set the data-is-set attribute
-	// }
 }
 
 function setProductDetailsInDom(productDetails, productNumber) {
@@ -116,10 +107,10 @@ function setProductDetailsInDom(productDetails, productNumber) {
 	shot = productDetails.images.shots[0];
 	size = productDetails.images.sizes[0];
 
-	// TODO: Uncomment this line when online
+	// // TODO: Uncomment this line when online
 	// imageURL = "http://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
 
-	// COmment for offline
+	// Comment for offline
 	imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
 
 	price = productDetails.price.amount;
@@ -130,9 +121,10 @@ function setProductDetailsInDom(productDetails, productNumber) {
 
 function processAnswer(selection) {
 	// Store current product being tested in window or localstorage?
+	if (turn === 9) { console.log('No more products') }
 
-	var activeProductPrice = document.getElementById(`product${document.activeProduct}`).dataset.price / 100;
-	var comparingProductPrice = document.getElementById(`product${document.comparingProduct}`).dataset.price / 100;
+	var activeProductPrice = document.getElementById(`product${turn}`).dataset.price / 100;
+	var comparingProductPrice = document.getElementById(`product${turn + 1}`).dataset.price / 100;
 
 	let overlayText = document.getElementById('overlay-text');
 
@@ -144,13 +136,16 @@ function processAnswer(selection) {
 	else if (selection === higher && activeProductPrice > comparingProductPrice) {
 		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/><br/>Correct!<br/> Product A: £${activeProductPrice} Product B: £${comparingProductPrice}<br/><br/>`);
 		addToScore();
+		nextTurn();
 	}
 	else if (selection === lower && activeProductPrice < comparingProductPrice) {
 		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/><br/>Correct!<br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
 		addToScore();
+		nextTurn();
 	}
 	else if (activeProductPrice === comparingProductPrice) {
 		overlayText.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + activeProductPrice + '. Product B: £' + comparingProductPrice + '<br/><br/>');
+		nextTurn();
 	}
 	else {
 		overlayText.innerHTML = (`<img src='./images/lose/${_getRandomNumber(1, 4)}.png'/><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
@@ -158,11 +153,26 @@ function processAnswer(selection) {
 	}
 
 	toggleOverlayMessage();
-	nextProduct();
 	// Reload the page to start a new game
 	// getNewProducts(); // Get new products again
 }
 
+function nextTurn() {
+	console.log('NEXT TURN');
+
+	// Do something with turn
+	if (turn === 9) {
+		// TODO: bank and END GAME 
+		return;
+	}
+	++turn;
+
+	// do sliding animation
+
+	// set data-is-active on .product img
+	console.log(`product${turn}`);
+	document.getElementById(`product${turn}`).setAttribute('data-is-active', 'true')
+}
 
 //////////////////////
 // Game functions
@@ -174,32 +184,25 @@ function addToScore() {
 }
 
 function loseALife() {
-	const lives = document.getElementById('lives');
+	const livesDisplay = document.getElementById('lives');
 
 	// TODO: FIX THIS SWITCH Look in yos
-	switch (document.lives) {
+	switch (lives) {
 		case 3:
-			lives.innerHTML = '❤️️❤️️🖤️️';
+			livesDisplay.innerHTML = '❤️️❤️️🖤️️';
 			break;
 		case 2:
-			lives.innerHTML = '❤️️🖤️️🖤️️';
+			livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
 			break;
 		case 1:
-			lives.innerHTML = '🖤️️🖤️️🖤️️';
+			livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
 			gameOver();
 			break;
 		default:
 			break;
 	}
 
-	document.lives = --document.lives;
-}
-
-function nextProduct() {
-	console.log('NEXT PRODUCT');
-	// Do something with document.activeProduct and document.comparingProduct
-	// do sliding animation
-	// set data-is-active on .product img
+	lives = --lives;
 }
 
 function toggleOverlayMessage() {

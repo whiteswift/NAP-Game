@@ -1,5 +1,6 @@
 # NAP TODO
 
+X- make debug override CSS
 - Handle active and comparing products in processAnswer()
 - nextProduct()
 - Get nap related gifs - JJ high five

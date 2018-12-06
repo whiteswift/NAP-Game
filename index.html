@@ -4,7 +4,7 @@
 <head>
 	<title>nap's price is right</title>
 	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
 	<!-- <link rel="stylesheet" href="css/glide.core.min.css"> -->
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<link rel="icon" href="favicon.png">
@@ -13,23 +13,20 @@
 <body>
 
 	<div class="container">
-		<div class="row">
 
-			<div class="col centre">
-				<h1>nap's price is right</h1>
-			</div>
-
-		</div>
-		<div class="row scoring">
+		<header class="scoring">
 			<div id='lives' data-lives='3' class="col">
 				❤️❤️❤️
 			</div>
-			<div class="col">
+			<div class="col centre">
+				<h1>nap's price is right</h1>
+			</div>
+			<div>
 				<div id="score-container" class="badge badge-danger">
 					SCORE <span id='score'>0</span>
 				</div>
 			</div>
-		</div>
+		</header>
 
 		<div class="product-container">
 			<div class="ticker-wrapper">
@@ -65,34 +62,21 @@
 					<img id='product9' data-is-active='' data-price='' class="product pic9 img" src="images/skeleton.png" alt="Product 9">
 				</div>
 			</div>
+
+			<div class='fixed cta-buttons'>
+				<div class=''>
+					<button id='higher' type="button" class="btn btn-dark btn-block high-low">Higher 🖕</button>
+				</div>
+				<div class=''>
+					<button id='lower' type="button" class="btn btn-dark btn-block high-low">Lower 👇</button>
+				</div>
+				<div class=''>
+					<button id='bank' type="button" class="btn btn-dark btn-block">Bank ＄</button>
+				</div>
+			</div>
 		</div>
 
-		<!-- <div class="row">
-			<div class="col">
-				<div id='productDescription1' class="description">
-					... Loading Description
-				</div>
-				<div id="productPrice1" data-price=''></div>
-			</div>
-			<div class="col">
-				<div id='productDescription2' class="description">
-					... Loading Description
-				</div>
-				<div id="productPrice2" data-price=''></div>
-			</div>
-		</div> -->
 
-		<div class='row fixed cta-buttons'>
-			<div class='col'>
-				<button id='higher' type="button" class="btn btn-dark btn-block high-low">Higher 🖕</button>
-			</div>
-			<div class='col'>
-				<button id='lower' type="button" class="btn btn-dark btn-block high-low">Lower 👇</button>
-			</div>
-			<div class='col'>
-				<button id='bank' type="button" class="btn btn-dark btn-block">Bank ＄</button>
-			</div>
-		</div>
 
 	</div>
 
