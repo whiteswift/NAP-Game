@@ -108,10 +108,10 @@ function setProductDetailsInDom(productDetails, productNumber) {
 	size = productDetails.images.sizes[0];
 
 	// // TODO: Uncomment this line when online
-	// imageURL = "http://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
+	imageURL = "http://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
 
 	// Comment for offline
-	imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
+	// imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
 
 	price = productDetails.price.amount;
 
