@@ -1,10 +1,5 @@
 
 document.addEventListener("DOMContentLoaded", start, false);
-// document.addEventListener("DOMContentLoaded", getNewProducts, false);
-
-
-// document.activeProduct = 0;
-// document.comparingProduct = 1;
 
 var score = 0;
 var pids = [];
@@ -19,6 +14,12 @@ const higher = 'higher';
 const lower = 'lower';
 const bank = 'bank';
 const slideDistance = -442;
+
+const ticker = document.getElementById("ticker-wrapper");
+
+function slideLeft() {
+	ticker.style.transform = `translateX(${turn * -442}px)` 
+}
 
 function start() {
 	// resetProducts();
@@ -54,52 +55,6 @@ function getNewProducts(offset) {
 			console.log(error)
 		});
 
-	// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
-	// 	.then((response) => {
-	// 		if (response.status !== 200) {
-	// 			console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed', response.status);
-	// 			return;
-	// 		}
-	// 		return response.json();
-	// 	})
-	// 	.then((pidData) => {
-	// 		// Clear the pids array
-	// 		randomNumbers = [];
-
-	// 		for (var i = 0; i < 2; i++) {
-
-	// 			do {
-	// 				// Get two randomNumbers from data
-	// 				randomNumbers[i] = _getRandomNumber(0, 59);
-	// 			}
-	// 			while (randomNumbers[0] === randomNumbers[1]); // Make sure they are not the same
-
-	// 			pids[i] = pidData.pids[randomNumbers[i]];
-	// 		}
-
-	// 		return pids;
-	// 	})
-	// 	.then((pids) => {
-	// 		// promise.all to functions
-
-	// 		let fetchPidDetailsPromises = [];
-	// 		for (var i = 0; i < 2; i++) {
-	// 			fetchPidDetailsPromises.push(fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[i]}`));
-	// 		}
-
-	// 		Promise.all(fetchPidDetailsPromises)
-	// 			.then(responses => {
-	// 				responses.forEach((response) => {
-	// 					response.json()
-	// 						.then((jsonProductData) => {
-	// 							processProductData(jsonProductData)
-	// 						});
-	// 				});
-	// 			})
-	// 			.catch(error => {
-	// 				console.log(error)
-	// 			});
-	// 	});
 }
 
 function processProductData(productData) {
@@ -190,15 +145,7 @@ function nextTurn() {
 	const slideFrom = turn - 1 * slideDistance;
 	const slideTo = turn * slideDistance;
 
-	const slideCSS = `@keyframes product-ticker {
-		from {
-		  transform: translateX(${slideFrom}px);
-		}
-		to {
-		  transform: translateX(${slideTo}px);
-		}
-	  }`;
-	// document.getElementById('ticker-wrapper').style = '';
+	slideLeft()
 
 	// set data-is-active on .product img
 	console.log(`product${turn}`);
