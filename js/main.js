@@ -13,15 +13,19 @@ var pid, shot, size, imageURL, name, designer, description, price, randomNumbers
 lives = 3;
 turn = 0;
 
+// turn * 442
+
 const higher = 'higher';
 const lower = 'lower';
 const bank = 'bank';
+const slideDistance = -442;
 
 function start() {
 	// resetProducts();
 	const offset = _getRandomOffset();
-	// getNewProducts(offset)
-	getNewMockProducts(offset);
+
+	getNewProducts(offset)
+	// getNewMockProducts(offset);
 }
 
 function getNewMockProducts(offset) {
@@ -35,52 +39,67 @@ function getNewMockProducts(offset) {
 function getNewProducts(offset) {
 	// TODO: Change this to just get data from summaries api
 
-	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
+	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`)
 		.then((response) => {
 			if (response.status !== 200) {
-				console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed', response.status);
+				console.log('fetch failed', response.status);
 				return;
 			}
 			return response.json();
 		})
-		.then((pidData) => {
-			// Clear the pids array
-			randomNumbers = [];
-
-			for (var i = 0; i < 2; i++) {
-
-				do {
-					// Get two randomNumbers from data
-					randomNumbers[i] = _getRandomNumber(0, 59);
-				}
-				while (randomNumbers[0] === randomNumbers[1]); // Make sure they are not the same
-
-				pids[i] = pidData.pids[randomNumbers[i]];
-			}
-
-			return pids;
+		.then((jsonProductData) => {
+			processProductData(jsonProductData)
 		})
-		.then((pids) => {
-			// promise.all to functions
-
-			let fetchPidDetailsPromises = [];
-			for (var i = 0; i < 2; i++) {
-				fetchPidDetailsPromises.push(fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[i]}`));
-			}
-
-			Promise.all(fetchPidDetailsPromises)
-				.then(responses => {
-					responses.forEach((response) => {
-						response.json()
-							.then((jsonProductData) => {
-								processProductData(jsonProductData)
-							});
-					});
-				})
-				.catch(error => {
-					console.log(error)
-				});
+		.catch(error => {
+			console.log(error)
 		});
+
+	// fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/60/${offset}/pids?priceMin=100000&visibility=visible`)
+	// 	.then((response) => {
+	// 		if (response.status !== 200) {
+	// 			console.log('ʕノ•ᴥ•ʔノ ︵ ┻━┻ fetch failed', response.status);
+	// 			return;
+	// 		}
+	// 		return response.json();
+	// 	})
+	// 	.then((pidData) => {
+	// 		// Clear the pids array
+	// 		randomNumbers = [];
+
+	// 		for (var i = 0; i < 2; i++) {
+
+	// 			do {
+	// 				// Get two randomNumbers from data
+	// 				randomNumbers[i] = _getRandomNumber(0, 59);
+	// 			}
+	// 			while (randomNumbers[0] === randomNumbers[1]); // Make sure they are not the same
+
+	// 			pids[i] = pidData.pids[randomNumbers[i]];
+	// 		}
+
+	// 		return pids;
+	// 	})
+	// 	.then((pids) => {
+	// 		// promise.all to functions
+
+	// 		let fetchPidDetailsPromises = [];
+	// 		for (var i = 0; i < 2; i++) {
+	// 			fetchPidDetailsPromises.push(fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/detail/${pids[i]}`));
+	// 		}
+
+	// 		Promise.all(fetchPidDetailsPromises)
+	// 			.then(responses => {
+	// 				responses.forEach((response) => {
+	// 					response.json()
+	// 						.then((jsonProductData) => {
+	// 							processProductData(jsonProductData)
+	// 						});
+	// 				});
+	// 			})
+	// 			.catch(error => {
+	// 				console.log(error)
+	// 			});
+	// 	});
 }
 
 function processProductData(productData) {
@@ -158,7 +177,7 @@ function processAnswer(selection) {
 }
 
 function nextTurn() {
-	console.log('NEXT TURN');
+	console.log(`NEXT TURN ${turn}`);
 
 	// Do something with turn
 	if (turn === 9) {
@@ -168,6 +187,18 @@ function nextTurn() {
 	++turn;
 
 	// do sliding animation
+	const slideFrom = turn - 1 * slideDistance;
+	const slideTo = turn * slideDistance;
+
+	const slideCSS = `@keyframes product-ticker {
+		from {
+		  transform: translateX(${slideFrom}px);
+		}
+		to {
+		  transform: translateX(${slideTo}px);
+		}
+	  }`;
+	// document.getElementById('ticker-wrapper').style = '';
 
 	// set data-is-active on .product img
 	console.log(`product${turn}`);
@@ -205,31 +236,13 @@ function loseALife() {
 	lives = --lives;
 }
 
-function toggleOverlayMessage() {
-	el = document.getElementById("overlay");
-	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-}
-
-function isOverlayVisible() {
-	el = document.getElementById("overlay");
-	return el.style.visibility;
-}
-
-function resetProducts() {
-	// let products = document.querySelectorAll('.product');
-	// products.forEach((product) => {
-	// 	product.setAttribute('data-is-set', 'false');
-	// });
-}
-
 function bankPoints() {
 	console.log('Bank Points FUNCTION');
 	saveScore(score);
 	// showNewGame();
 }
 
-function gameOver() {
-	// modal and gif with score
+function gameOver() { // modal and gif with score
 	console.log('GAME OVER FUNCTION');
 	saveScore(0);
 
@@ -237,7 +250,7 @@ function gameOver() {
 }
 
 
-function saveScore(points) {
+function saveScore(points) { // Save score in localstorage
 	// get team scores array from localstorage if any
 	let scores = JSON.parse(window.localStorage.getItem('scores'));
 
@@ -268,6 +281,16 @@ function _getRandomOffset() {
 
 function _getRandomNumber(min, max) {
 	return Math.floor(Math.random() * (max - min) + min);
+}
+
+function toggleOverlayMessage() {
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+
+function isOverlayVisible() {
+	el = document.getElementById("overlay");
+	return el.style.visibility;
 }
 
 //////////////////////
