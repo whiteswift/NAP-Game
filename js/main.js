@@ -18,7 +18,7 @@ const slideDistance = -442;
 const ticker = document.getElementById("ticker-wrapper");
 
 function slideLeft() {
-	ticker.style.transform = `translateX(${turn * -442}px)` 
+	ticker.style.transform = `translateX(${turn * -442}px)`
 }
 
 function start() {
@@ -58,20 +58,29 @@ function getNewProducts(offset) {
 }
 
 function processProductData(productData) {
-	// Set 10 different products data with random 
+	// Set 10 different products data with random numbers. Random numbers used to select array positions
 	let pids = [];
+	let uniquePids = [];
 
-	for (var i = 0; i < 10; i++) {
-		pids.push(_getRandomNumber(0, 59))
+	while (uniquePids.length < 10) { // make sure none of the pids are the same
+		pids = setRandomArray(10);
+		uniquePids = [...new Set(pids)];
 	}
-	// make sure none of the pids are the same number - yeh right
 
 	// map over pids array to fire off setDOM function
 	pids.map((productNumber, count) => {
-		// console.log('productNumber', productNumber); // 23,35,53
-		// console.log('count', count); // 0,1,2,3		
+		// productNumber 23,35,53
+		// count 0,1,2,3		
 		setProductDetailsInDom(productData.summaries[productNumber], count);
 	})
+}
+
+function setRandomArray(iterations) {
+	let tempPids = [];
+	for (var i = 0; i < iterations; i++) {
+		tempPids.push(_getRandomNumber(0, 59))
+	}
+	return tempPids;
 }
 
 function setProductDetailsInDom(productDetails, productNumber) {
