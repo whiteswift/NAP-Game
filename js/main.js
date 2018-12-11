@@ -3,33 +3,28 @@ document.addEventListener("DOMContentLoaded", start, false);
 
 var score = 0;
 var pids = [];
-var pid, shot, size, imageURL, name, designer, description, price, randomNumbers, lives, turn;
+var pid, shot, size, imageURL, name, designer, description, price, randomNumbers;
 
-lives = 3;
-turn = 0;
-
-// turn * 442
+let lives = 3;
+let turn = 0;
 
 const higher = 'higher';
 const lower = 'lower';
 const bank = 'bank';
 const slideDistance = -442;
-
+const numberOfProducts = 11;
 const ticker = document.getElementById("ticker-wrapper");
-
-function slideLeft() {
-	ticker.style.transform = `translateX(${turn * -442}px)`
-}
+let overlayText = document.getElementById('overlay-text');
 
 function start() {
 	// resetProducts();
 	const offset = _getRandomOffset();
 
 	getNewProducts(offset)
-	// getNewMockProducts(offset);
+	// getNewMockProducts();
 }
 
-function getNewMockProducts(offset) {
+function getNewMockProducts() {
 	// debugger check 
 	const summariesData = JSON.parse(summaries);
 	processProductData(summariesData);
@@ -54,7 +49,6 @@ function getNewProducts(offset) {
 		.catch(error => {
 			console.log(error)
 		});
-
 }
 
 function processProductData(productData) {
@@ -62,8 +56,8 @@ function processProductData(productData) {
 	let pids = [];
 	let uniquePids = [];
 
-	while (uniquePids.length < 10) { // make sure none of the pids are the same
-		pids = setRandomArray(10);
+	while (uniquePids.length < numberOfProducts) { // make sure none of the pids are the same
+		pids = setRandomArray(numberOfProducts);
 		uniquePids = [...new Set(pids)];
 	}
 
@@ -104,12 +98,10 @@ function setProductDetailsInDom(productDetails, productNumber) {
 
 function processAnswer(selection) {
 	// Store current product being tested in window or localstorage?
-	if (turn === 9) { console.log('No more products') }
+	if (turn === (numberOfProducts - 1)) { console.log('No more products - this shouldnt be shown') }
 
 	var activeProductPrice = document.getElementById(`product${turn}`).dataset.price / 100;
 	var comparingProductPrice = document.getElementById(`product${turn + 1}`).dataset.price / 100;
-
-	let overlayText = document.getElementById('overlay-text');
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
@@ -144,21 +136,20 @@ function nextTurn() {
 	console.log(`NEXT TURN ${turn}`);
 
 	// Do something with turn
-	if (turn === 9) {
-		// TODO: bank and END GAME 
-		return;
-	}
 	++turn;
-
-	// do sliding animation
-	const slideFrom = turn - 1 * slideDistance;
-	const slideTo = turn * slideDistance;
+	if (turn === (numberOfProducts - 1)) {
+		overlayText.innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>YOU WIN!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+		// TODO make dismiss disappear 
+	}
 
 	slideLeft()
 
 	// set data-is-active on .product img
-	console.log(`product${turn}`);
 	document.getElementById(`product${turn}`).setAttribute('data-is-active', 'true')
+}
+
+function slideLeft() {
+	ticker.style.transform = `translateX(${turn * -442}px)`
 }
 
 //////////////////////
@@ -205,9 +196,8 @@ function gameOver() { // modal and gif with score
 	document.getElementById('overlay-text').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 }
 
-
-function saveScore(points) { // Save score in localstorage
-	// get team scores array from localstorage if any
+function saveScore(points) { // Save score in localStorage
+	// get team scores array from localStorage if any
 	let scores = JSON.parse(window.localStorage.getItem('scores'));
 
 	if (!scores) scores = [];
