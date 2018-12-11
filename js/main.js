@@ -130,7 +130,7 @@ function processAnswer(selection) {
 	}
 
 	toggleOverlayMessage()
-	setTimeout(function(){ toggleOverlayMessage(); }, 2000);
+	setTimeout(function () { toggleOverlayMessage(); }, 2000);
 	// Reload the page to start a new game
 	// getNewProducts(); // Get new products again
 }
@@ -141,15 +141,11 @@ function nextTurn() {
 	// Do something with turn
 	++turn;
 	if (turn === (numberOfProducts - 1)) {
-		document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>YOU WIN!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
-		toggleEndGameOverlayMessage()
-		// TODO make dismiss disappear 
+		winGame();
 	}
 
 	slideLeft()
-
-	// set data-is-active on .product img
-	document.getElementById(`product${turn}`).setAttribute('data-is-active', 'true')
+	document.getElementById(`product${turn}`).setAttribute('data-is-active', 'true') // set data-is-active on .product img
 }
 
 function slideLeft() {
@@ -191,6 +187,12 @@ function bankPoints() {
 	console.log('Bank Points FUNCTION');
 	saveScore(score);
 	// showNewGame();
+}
+
+function winGame() {
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>YOU WIN!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	bankPoints();
+	toggleEndGameOverlayMessage();
 }
 
 function gameOver() { // modal and gif with score
@@ -265,7 +267,7 @@ function isOverlayVisible() {
 	});
 });
 
-document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
+// document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
 document.getElementById('bank').addEventListener('click', () => { processAnswer('bank'); });
 
 // TODO: Make a switch

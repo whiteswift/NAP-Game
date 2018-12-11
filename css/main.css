@@ -15,12 +15,17 @@ h1 {
   font-family: gill sans;
   font-weight: 600;
   text-decoration: underline;
+  font-size: 1.5em;
+}
+#lives {
+  font-size: 2em;
 }
 .container {
   height: 100%;
 }
 #score-container {
   float:right;
+  font-size: 1.5em;
 }
 .scoring {
   font-size: 2em;
@@ -174,9 +179,9 @@ h1 {
 
 /* FOR DEBUGGING REMOVE WHEN LIVE */
 /* REMOVE THIS Override CSS for overflow to be scroll */
-.product[data-is-active^="true"] {
+/* .product[data-is-active^="true"] {
   border: 1px solid red;
-}
+} */
 /* .product-container {
   overflow: inherit !important;
   margin: 0 auto;
