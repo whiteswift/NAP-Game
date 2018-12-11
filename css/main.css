@@ -35,24 +35,31 @@ h1 {
 }
 #overlay {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   visibility: hidden;
   position: absolute;
-  left: 0px;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  right: 30px;
+  top: 20%;
+  width: 300px;
+  height: 450px;
   text-align: center;
-  background: rgba(55, 55, 55, 0.75);
   z-index: 1000;
-  color: white;
+  color: black;
+  border: 2px solid black;
 }
 #overlay-text {
-  font-size: 3vw;
+  font-size: 18px;
 }
-#overlay-text img {
-  max-width: 50vmin;
+#img-container {
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+#overlay img {
+	width: 100%;
+	height: auto;
 }
 #new-game {
   background: maroon;

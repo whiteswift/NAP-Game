@@ -109,33 +109,34 @@ function processAnswer(selection) {
 	var activeProductPrice = document.getElementById(`product${turn}`).dataset.price / 100;
 	var comparingProductPrice = document.getElementById(`product${turn + 1}`).dataset.price / 100;
 
-	let overlayText = document.getElementById('overlay-text');
+	let overlay = document.getElementById('overlay');
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
-		overlayText.innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>BANK!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+		overlay.innerHTML = `<div id="img-container"><img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/></div><span id="overlay-text"><br/>BANK!<br/></span><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 		bankPoints();
 	}
 	else if (selection === higher && activeProductPrice > comparingProductPrice) {
-		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/><br/>Correct!<br/> Product A: £${activeProductPrice} Product B: £${comparingProductPrice}<br/><br/>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/>Correct!<br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
 	else if (selection === lower && activeProductPrice < comparingProductPrice) {
-		overlayText.innerHTML = (`<img src='./images/win/${_getRandomNumber(1, 3)}.gif'/><br/>Correct!<br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/>Correct!<br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
 	else if (activeProductPrice === comparingProductPrice) {
-		overlayText.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + activeProductPrice + '. Product B: £' + comparingProductPrice + '<br/><br/>');
+		overlay.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + activeProductPrice + '<br/>Product B: £' + comparingProductPrice + '<br/><br/></span>');
 		nextTurn();
 	}
 	else {
-		overlayText.innerHTML = (`<img src='./images/lose/${_getRandomNumber(1, 4)}.png'/><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}. Product B: £${comparingProductPrice}<br/><br/>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, 4)}.png'/></div><span id="overlay-text"><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		loseALife();
 	}
 
-	toggleOverlayMessage();
+	toggleOverlayMessage()
+	setTimeout(function(){ toggleOverlayMessage(); }, 2000);
 	// Reload the page to start a new game
 	// getNewProducts(); // Get new products again
 }
@@ -202,7 +203,7 @@ function gameOver() { // modal and gif with score
 	console.log('GAME OVER FUNCTION');
 	saveScore(0);
 
-	document.getElementById('overlay-text').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	document.getElementById('overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 }
 
 
