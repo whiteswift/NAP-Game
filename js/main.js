@@ -107,16 +107,16 @@ function processAnswer(selection) {
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
-		overlay.innerHTML = `<div id="img-container"><img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/></div><span id="overlay-text"><br/>BANK!<br/></span><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+		overlay.innerHTML = `<div id="img-container"><img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/></div><span id="overlay-text"><br/><b>BANK!</b><br/></span><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 		bankPoints();
 	}
 	else if (selection === higher && activeProductPrice > comparingProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/>Correct!<br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
 	else if (selection === lower && activeProductPrice < comparingProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/>Correct!<br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
@@ -125,7 +125,7 @@ function processAnswer(selection) {
 		nextTurn();
 	}
 	else {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, 4)}.png'/></div><span id="overlay-text"><br/>Incorrect!<br/><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, 4)}.png'/></div><span id="overlay-text"><br/><b>Incorrect!</b><br/><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		loseALife();
 	}
 
@@ -141,7 +141,8 @@ function nextTurn() {
 	// Do something with turn
 	++turn;
 	if (turn === (numberOfProducts - 1)) {
-		overlayText.innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>YOU WIN!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+		document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>YOU WIN!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+		toggleEndGameOverlayMessage()
 		// TODO make dismiss disappear 
 	}
 
@@ -196,7 +197,8 @@ function gameOver() { // modal and gif with score
 	console.log('GAME OVER FUNCTION');
 	saveScore(0);
 
-	document.getElementById('overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	toggleEndGameOverlayMessage()
 }
 
 function saveScore(points) { // Save score in localStorage
@@ -234,6 +236,11 @@ function _getRandomNumber(min, max) {
 
 function toggleOverlayMessage() {
 	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+
+function toggleEndGameOverlayMessage() {
+	el = document.getElementById("end-game-overlay");
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 

@@ -50,16 +50,32 @@ h1 {
   border: 2px solid black;
 }
 #overlay-text {
-  font-size: 18px;
+  font-size: 24px;
 }
 #img-container {
 	overflow: hidden;
 	width: 100%;
-	height: 100%;
+	height: 70%;
 }
 #overlay img {
 	width: 100%;
 	height: auto;
+}
+#end-game-overlay {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+	position: absolute;
+	left: 0px;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background: rgba(55, 55, 55, 0.75);
+	z-index: 1000;
+	color: white;
 }
 #new-game {
   background: maroon;
