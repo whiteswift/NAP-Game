@@ -190,7 +190,7 @@ function bankPoints() {
 }
 
 function winGame() {
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><br/>YOU WIN!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><div class='outcome'>YOU WIN!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 	bankPoints();
 	toggleEndGameOverlayMessage();
 }
@@ -199,7 +199,7 @@ function gameOver() { // modal and gif with score
 	console.log('GAME OVER FUNCTION');
 	saveScore(0);
 
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><br/>You lose!<br/><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><div class='outcome'>YOU LOSE!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 	toggleEndGameOverlayMessage()
 }
 
