@@ -5,7 +5,7 @@ var score = 0;
 var pids = [];
 var pid, shot, size, imageURL, name, designer, description, price, randomNumbers;
 
-let lives = 3;
+let lives = 2;
 let turn = 0;
 
 const higher = 'higher';
@@ -107,16 +107,15 @@ function processAnswer(selection) {
 
 	// TODO: Change this to a switch
 	if (selection === 'bank') {
-		overlay.innerHTML = `<div id="img-container"><img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/></div><span id="overlay-text"><br/><b>BANK!</b><br/></span><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 		bankPoints();
 	}
 	else if (selection === higher && activeProductPrice > comparingProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
 	else if (selection === lower && activeProductPrice < comparingProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/><br/> Product A: £${activeProductPrice}<br/>Product B: £${comparingProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
@@ -130,7 +129,7 @@ function processAnswer(selection) {
 	}
 
 	toggleOverlayMessage()
-	setTimeout(function () { toggleOverlayMessage(); }, 2000);
+	setTimeout(function () { toggleOverlayMessage(); }, 1250);
 	// Reload the page to start a new game
 	// getNewProducts(); // Get new products again
 }
@@ -164,16 +163,12 @@ function addToScore() {
 function loseALife() {
 	const livesDisplay = document.getElementById('lives');
 
-	// TODO: FIX THIS SWITCH Look in yos
 	switch (lives) {
-		case 3:
-			livesDisplay.innerHTML = '❤️️❤️️🖤️️';
-			break;
 		case 2:
-			livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
+			livesDisplay.innerHTML = '❤️️🖤️️';
 			break;
 		case 1:
-			livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
+			livesDisplay.innerHTML = '🖤️️🖤️️';
 			gameOver();
 			break;
 		default:
@@ -184,9 +179,9 @@ function loseALife() {
 }
 
 function bankPoints() {
-	console.log('Bank Points FUNCTION');
 	saveScore(score);
-	// showNewGame();
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><div class='outcome'>BANK!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	toggleEndGameOverlayMessage();
 }
 
 function winGame() {
@@ -196,9 +191,8 @@ function winGame() {
 }
 
 function gameOver() { // modal and gif with score
-	console.log('GAME OVER FUNCTION');
 	saveScore(0);
-
+	document.getElementById('score').innerHTML = 0;
 	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><div class='outcome'>YOU LOSE!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 	toggleEndGameOverlayMessage()
 }
