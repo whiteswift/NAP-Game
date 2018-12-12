@@ -107,6 +107,7 @@ h1 {
 }
 .product__image {
   display: inline-block;
+  cursor: pointer;
 }
 
 #ticker-wrapper {
