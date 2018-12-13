@@ -1,5 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", start, false);
+const bankImages = 3;
+const loseImages = 4;
+const winGifs = 2;
 
 var score = 0;
 var pids = [];
@@ -110,12 +113,12 @@ function processAnswer(selection) {
 		bankPoints();
 	}
 	else if (selection === left && leftProductPrice > rightProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, winGifs + 1)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
 	else if (selection === right && leftProductPrice < rightProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, 3)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, winGifs + 1)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
 		addToScore();
 		nextTurn();
 	}
@@ -124,7 +127,7 @@ function processAnswer(selection) {
 		nextTurn();
 	}
 	else {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, 4)}.png'/></div><span id="overlay-text"><br/><b>Incorrect!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
+		overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, loseImages + 1)}.jpg'/></div><span id="overlay-text"><br/><b>Incorrect!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
 		loseALife();
 	}
 
@@ -135,11 +138,11 @@ function processAnswer(selection) {
 }
 
 function nextTurn() {
-	console.log(`NEXT TURN ${turn}`);
-
-	// Do something with turn
 	++turn;
-	if (turn === (numberOfProducts - 1)) {
+
+	console.log(`TURN ${turn}`);
+	// Do something with turn
+	if (turn === (numberOfProducts - 1)) { //if turn = 10
 		winGame();
 	}
 
@@ -180,20 +183,20 @@ function loseALife() {
 
 function bankPoints() {
 	saveScore(score);
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><div class='outcome'>BANK!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, bankImages + 1)}.jpg'/><div class='outcome'>BANK!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 	toggleEndGameOverlayMessage();
 }
 
 function winGame() {
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, 3)}.jpg'/><div class='outcome'>YOU WIN!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
-	bankPoints();
+	saveScore(score);
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, bankImages + 1)}.jpg'/><div class='outcome'>YOU WIN!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 	toggleEndGameOverlayMessage();
 }
 
 function gameOver() { // modal and gif with score
 	saveScore(0);
 	document.getElementById('score').innerHTML = 0;
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, 3)}.png'/><div class='outcome'>YOU LOSE!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, loseImages + 1)}.jpg'/><div class='outcome'>YOU LOSE!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
 	toggleEndGameOverlayMessage()
 }
 
@@ -250,16 +253,8 @@ function isOverlayVisible() {
 //////////////////////
 
 [].forEach.call(document.getElementsByClassName('product'), (element) => {
-
-	// TODO: FIx and uncomment these lines
-	// Make this work by getting active and comparative product
-
 	element.addEventListener('click', () => {
 		let selection = !!element.dataset.isActive ? 'left' : 'right';
-		// let selection = element.
-		// data-is-active
-
-		// Pass in what the actuve product and question product is 
 		processAnswer(selection);
 	});
 });
@@ -269,14 +264,15 @@ document.getElementById('bank').addEventListener('click', () => { processAnswer(
 
 // TODO: Make a switch
 window.addEventListener('keydown', (event) => {
-	if (event.keyCode === 38) { // Up
+
+	if (event.keyCode === 37) { // Left
 		event.preventDefault();
 		// Check if overlay is present - then return if so
 		if (isOverlayVisible() !== 'visible') {
 			processAnswer(left);
 		}
 	}
-	if (event.keyCode === 40) { // Right
+	if (event.keyCode === 39) { // Right
 		event.preventDefault();
 		if (isOverlayVisible() !== 'visible') {
 			processAnswer(right);
