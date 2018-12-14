@@ -1,8 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", start, false);
 const bankImages = 3;
-const loseImages = 4;
-const winGifs = 2;
+const loseImages = 5;
+const winGifs = 3;
 
 var score = 0;
 var pids = [];
@@ -132,7 +132,7 @@ function processAnswer(selection) {
 	}
 
 	toggleOverlayMessage()
-	setTimeout(function () { toggleOverlayMessage(); }, 1250);
+	setTimeout(function () { toggleOverlayMessage(); }, 1500);
 	// Reload the page to start a new game
 	// getNewProducts(); // Get new products again
 }
