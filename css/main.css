@@ -1,35 +1,77 @@
 @import './vars.css';
 
 body {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
 header {
   display: flex;
   justify-content: space-evenly;
   font-family: sans-serif;
 }
+
 header div {
   display: inline-block;
 }
+
+@media only screen and (min-width: 1024px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  #lives {
+    font-size: 2em;
+  }
+
+  #score-container {
+    font-size: 1.5em;
+  }
+
+  .cta-buttons button {
+    height: 3em;
+    font-size: 2vh;
+  }
+
+  #overlay {
+    right: 30px;
+    top: 20%;
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 450px;
+    max-height: 775px;
+  }
+
+  #end-game-overlay img {
+    height: 50%;
+    width: auto;
+  }
+}
+
 h1 {
+  font-size: 1em;
   font-family: gill sans;
-  font-weight: 600;
+  font-weight: 1000;
+  width: 100%;
   text-decoration: underline;
-  font-size: 1.5em;
 }
+
 #lives {
-  font-size: 2em;
+  font-size: 1em;
 }
+
 .container {
   height: 100%;
 }
+
 #score-container {
-  float:right;
-  font-size: 1.5em;
+  font-size: 1em;
+  float: right;
 }
+
 .scoring {
-  font-size: 2em;
+  font-size: 1em;
 }
+
 .fixed {
   /* position: sticky; */
   position: fixed;
@@ -38,6 +80,7 @@ h1 {
   bottom: 20px;
   width: 100%;
 }
+
 #overlay {
   display: flex;
   flex-direction: column;
@@ -45,70 +88,79 @@ h1 {
   align-items: center;
   visibility: hidden;
   position: absolute;
-  right: 30px;
-  top: 20%;
-  /* width: 300px;
-  height: 450px; */
   text-align: center;
   z-index: 1000;
   color: black;
   border: 2px solid black;
-  min-width: 300px;
-  max-width: 500px;
-  min-height: 450px;
-  max-height: 775px;
+  right: 20px;
+  top: 10%;
+  min-width: 200px;
+  max-width: 250px;
+  min-height: 370px;
+  max-height: 590px;
+  background: white;
 }
+
 #overlay-text {
   font-size: 24px;
 }
+
 #img-container {
-	overflow: hidden;
-	width: 100%;
-	height: 70%;
+  overflow: hidden;
+  width: 100%;
+  height: 70%;
 }
+
 #overlay img {
-	width: 100%;
-	height: auto;
+  width: 100%;
+  height: auto;
 }
+
 #end-game-overlay {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	visibility: hidden;
-	position: absolute;
-	left: 0px;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	background: rgba(55, 55, 55, 0.75);
-	z-index: 1000;
-	color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  position: absolute;
+  left: 0px;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(55, 55, 55, 0.75);
+  z-index: 1000;
+  color: white;
 }
+
 #new-game {
   background: maroon;
   color: white;
   width: 30vmin;
   height: 10vmin;
-  font-size: 2em;
+  font-size: 1em;
 }
+
 .outcome {
-  font-size: 2em;
+  font-size: 1em;
   margin: 20px 0;
 }
+
 .centre {
   text-align: center;
 }
+
 .img {
   width: 438px;
   height: 657px;
 }
+
 .product-container {
   overflow: hidden;
   width: 884px;
   margin: 0 auto;
 }
+
 .product__image {
   display: inline-block;
   cursor: pointer;
@@ -116,23 +168,26 @@ h1 {
 
 #ticker-wrapper {
   /* width: var(--ticker-width); */
-  -webkit-transition:all 1.0s ease-in-out;
-  -moz-transition:all 1.0s ease-in-out;
-  -o-transition:all 1.0s ease-in-out;
-  transition:all 1.0s ease-in-out;
+  -webkit-transition: all 1.0s ease-in-out;
+  -moz-transition: all 1.0s ease-in-out;
+  -o-transition: all 1.0s ease-in-out;
+  transition: all 1.0s ease-in-out;
   width: 5000px;
 }
+
 .ticking {
   animation: product-ticker 1.5s 0.2s ease forwards;
-}           /* name        timing delay type forwards */
+}
+
+/* name        timing delay type forwards */
 
 @keyframes product-ticker {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(var(--slide-distance));
-    /* transform: translateX(calc(2 * var(--slide-distance))); */
   }
 }
 
@@ -146,16 +201,17 @@ h1 {
   user-select: none;
   border: 1px solid transparent;
   padding: .5rem .75rem;
-  font-size: 1rem;
   line-height: 1.25;
   border-radius: .25rem;
   transition: all .15s ease-in-out;
 }
+
 .btn-success {
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
 }
+
 .badge-danger {
   color: #fff;
   background-color: #dc3545;
@@ -164,7 +220,6 @@ h1 {
 .badge {
   display: inline-block;
   padding: .25em .4em;
-  font-size: 75%;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -176,7 +231,7 @@ h1 {
 
 .cta-buttons button {
   height: 3em;
-  font-size: 2vh;
+  font-size: 3vh;
   cursor: pointer;
   background: hsl(215, 17%, 32%);
   color: white;
@@ -189,7 +244,7 @@ h1 {
 }
 
 /* FOR DEBUGGING REMOVE WHEN LIVE */
-/* REMOVE THIS Override CSS for overflow to be scroll */
+/* Override CSS for overflow to be scroll */
 /* .product[data-is-active^="true"] {
   border: 1px solid red;
 } */
