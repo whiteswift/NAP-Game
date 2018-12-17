@@ -1,26 +1,9 @@
 # NAP TODO
 
-X- make debug override CSS
-- Handle active and comparing products in processAnswer()
-- nextProduct()
-- Get nap related gifs - JJ high five
-X- Bank points function
-X- Button click event listeners
-
-X- Make feedback loop when keyboard is pressed
-    - Display "You chose higher" on overlay
-    - Gifs on button press
-X- Make hearts decrease when incorrect -
-- Make carousel
-    X- Initial translate animation
-    - How to make ticker move for each answer - javascript?
-    - Make left product stay when you guess - what if the product costs a bomb and each answer after is easy?
-
+- Fix media queries
 - Make overlay opaque
-- Don't show price if incorrect
 - Sounds for interactions
     - matron / nanny / paper horn
-- Is offset needed? 
 
 Nice to have
 - Intro screen with instructions

@@ -3,10 +3,18 @@
 
 <head>
 	<title>nap's price is right</title>
-	<link rel="stylesheet" href="css/main.css">
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41187438-5"></script>
 	<link rel="icon" href="favicon.png">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="preload" href="js/main.js" as="script" />
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+		gtag('config', 'UA-41187438-5');
+	</script>
+	<link rel="stylesheet" href="css/main.css" as="style">
 </head>
 
 <body>
@@ -24,7 +32,6 @@
 				<div id="score-container" class="badge badge-danger">
 					SCORE <span id='score'>0</span>
 				</div>
-
 			</div>
 		</header>
 
@@ -87,7 +94,7 @@
 		Loading message...
 	</div>
 
-	<script src="js/main.js"></script>
+	<script defer src="js/main.js"></script>
 </body>
 
 </html>
