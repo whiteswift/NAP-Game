@@ -202,7 +202,11 @@ function gameOver() { // modal and gif with score
 
 function saveScore(points) { // Save score in localStorage
 	// get team scores array from localStorage if any
-	let scores = JSON.parse(window.localStorage.getItem('scores'));
+	let scores;
+	try {
+		scores = JSON.parse(window.localStorage.getItem('scores'));
+	} catch (error) { }
+
 
 	if (!scores) scores = [];
 	// make team object to scores array
