@@ -8,7 +8,7 @@ var score = 0;
 var pids = [];
 var pid, shot, size, imageURL, name, designer, description, price, randomNumbers;
 
-let lives = 2;
+let lives = 3;
 let turn = 0;
 
 const left = 'left';
@@ -167,11 +167,14 @@ function loseALife() {
 	const livesDisplay = document.getElementById('lives');
 
 	switch (lives) {
+		case 3:
+			livesDisplay.innerHTML = '❤️️❤️️🖤️️';
+			break;
 		case 2:
-			livesDisplay.innerHTML = '❤️️🖤️️';
+			livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
 			break;
 		case 1:
-			livesDisplay.innerHTML = '🖤️️🖤️️';
+			livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
 			gameOver();
 			break;
 		default:
