@@ -35,23 +35,31 @@ function getNewMockProducts() {
 	// Let processProductData handle checking for what products have been set.
 }
 
-function getNewProducts(offset) {
+async function getNewProducts(offset) {
 	// TODO: Change this to just get data from summaries api
 
-	fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`)
-		.then((response) => {
-			if (response.status !== 200) {
-				console.log('fetch failed', response.status);
-				return;
-			}
-			return response.json();
-		})
-		.then((jsonProductData) => {
-			processProductData(jsonProductData)
-		})
-		.catch(error => {
-			console.log(error)
-		});
+	try {
+		const response = await fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
+		const json = await response.json();
+		processProductData(json);
+	}
+	catch (error) {
+		console.error(error);
+	}
+
+	// .then((response) => {
+	// 		if (response.status !== 200) {
+	// 			console.log('fetch failed', response.status);
+	// 			return;
+	// 		}
+	// 		return response.json();
+	// 	})
+	// 	.then((jsonProductData) => {
+	// 		processProductData(jsonProductData)
+	// 	})
+	// 	.catch(error => {
+	// 		console.log(error)
+	// 	});
 }
 
 function processProductData(productData) {
