@@ -168,13 +168,25 @@ function loseALife() {
 
 	switch (lives) {
 		case 3:
-			livesDisplay.innerHTML = '❤️️❤️️🖤️️';
+			// livesDisplay.innerHTML = '❤️️❤️️🖤️️';
+			livesDisplay.innerHTML = `
+			<img src='./images/heart.png' alt='life' />
+			<img src='./images/heart.png' alt='life' />
+			<img src='./images/blackHeart.png' alt='life-container' />`;
 			break;
 		case 2:
-			livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
+			// livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
+			livesDisplay.innerHTML = `
+			<img src='./images/heart.png' alt='life' />
+			<img src='./images/blackHeart.png' alt='life-container' />
+			<img src='./images/blackHeart.png' alt='life-container' />`;
 			break;
 		case 1:
-			livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
+			// livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
+			livesDisplay.innerHTML = `
+			<img src='./images/blackHeart.png' alt='life-container' />
+			<img src='./images/blackHeart.png' alt='life-container' />
+			<img src='./images/blackHeart.png' alt='life-container' />`;
 			gameOver();
 			break;
 		default:

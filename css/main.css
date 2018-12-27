@@ -22,7 +22,7 @@ h1 {
   text-decoration: underline;
 }
 
-.lives img {
+#lives img {
   height: 2em;
 }
 
@@ -225,7 +225,7 @@ h1 {
     font-size: 1.5em;
   }
 
-  .lives img {
+  #lives img {
     height: 2em;
   }
 
