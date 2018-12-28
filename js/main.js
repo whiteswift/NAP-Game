@@ -262,6 +262,14 @@ function toggleEndGameOverlayMessage() {
 	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 
+function toggleGameCover() {
+	let el = document.getElementById("game-cover-overlay");
+
+	el.innerHTML = (`<div class="game-cover-img-container"><img src='./images/a.jpg'/></div><span id="overlay-text"><br/><br/></span>`);
+
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+
 function isOverlayVisible() {
 	el = document.getElementById("overlay");
 	return el.style.visibility;
@@ -280,6 +288,7 @@ function isOverlayVisible() {
 
 // document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
 document.getElementById('bank').addEventListener('click', () => { processAnswer('bank'); });
+document.getElementById('game').addEventListener('click', () => { toggleGameCover(); });
 
 // TODO: Make a switch
 window.addEventListener('keydown', (event) => {
