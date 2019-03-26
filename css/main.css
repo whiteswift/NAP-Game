@@ -14,39 +14,6 @@ header div {
   display: inline-block;
 }
 
-@media only screen and (min-width: 1024px) {
-  h1 {
-    font-size: 1.5em;
-  }
-
-  #lives {
-    font-size: 2em;
-  }
-
-  #score-container {
-    font-size: 1.5em;
-  }
-
-  .cta-buttons button {
-    height: 3em;
-    font-size: 2vh;
-  }
-
-  #overlay {
-    right: 30px;
-    top: 20%;
-    min-width: 300px;
-    max-width: 500px;
-    min-height: 450px;
-    max-height: 775px;
-  }
-
-  #end-game-overlay img {
-    height: 50%;
-    width: auto;
-  }
-}
-
 h1 {
   font-size: 1em;
   font-family: gill sans;
@@ -55,8 +22,8 @@ h1 {
   text-decoration: underline;
 }
 
-#lives {
-  font-size: 1em;
+#lives img {
+  height: 2em;
 }
 
 .container {
@@ -251,3 +218,36 @@ h1 {
   overflow: inherit !important;
   margin: 0 auto;
 } */
+
+@media only screen and (min-width: 1024px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  #lives img {
+    height: 2em;
+  }
+
+  #score-container {
+    font-size: 1.5em;
+  }
+
+  .cta-buttons button {
+    height: 3em;
+    font-size: 2vh;
+  }
+
+  #overlay {
+    right: 30px;
+    top: 20%;
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 450px;
+    max-height: 775px;
+  }
+
+  #end-game-overlay img {
+    height: 50%;
+    width: auto;
+  }
+}

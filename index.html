@@ -3,10 +3,19 @@
 
 <head>
 	<title>nap's price is right</title>
-	<link rel="stylesheet" href="css/main.css">
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41187438-5"></script>
 	<link rel="icon" href="favicon.png">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="preload" href="js/main.js" as="script" />
+	<link rel="preload" href="images/blackHeart.png" as="image" />
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+		gtag('config', 'UA-41187438-5');
+	</script>
+	<link rel="stylesheet" href="css/main.css" as="style">
 </head>
 
 <body>
@@ -15,7 +24,10 @@
 
 		<header class="scoring">
 			<div id='lives' class="col">
-				❤️❤️
+				<!-- ❤️❤️❤️ -->
+				<img src='./images/heart.png' alt='life' />
+				<img src='./images/heart.png' alt='life' />
+				<img src='./images/heart.png' alt='life' />
 			</div>
 			<div class="col centre">
 				<h1>nap's price is right</h1>
@@ -24,7 +36,6 @@
 				<div id="score-container" class="badge badge-danger">
 					SCORE <span id='score'>0</span>
 				</div>
-
 			</div>
 		</header>
 
@@ -68,12 +79,6 @@
 	</div>
 
 	<div class='fixed cta-buttons'>
-		<!-- <div class=''>
-			<button id='higher' type="button" class="btn btn-dark btn-block high-low">Higher 🖕</button>
-		</div>
-		<div class=''>
-			<button id='lower' type="button" class="btn btn-dark btn-block high-low">Lower 👇</button>
-		</div> -->
 		<div class=''>
 			<button id='bank' type="button" class="btn btn-dark btn-block">Bank ＄</button>
 		</div>
@@ -87,7 +92,7 @@
 		Loading message...
 	</div>
 
-	<script src="js/main.js"></script>
+	<script defer src="js/main.js"></script>
 </body>
 
 </html>
