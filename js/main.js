@@ -39,7 +39,7 @@ async function getNewProducts(offset) {
 	// TODO: Change this to just get data from summaries api
 
 	try {
-		const response = await fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
+		const response = await fetch(`https://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
 		const json = await response.json();
 		processProductData(json);
 	}
@@ -96,7 +96,7 @@ function setProductDetailsInDom(productDetails, productNumber) {
 	size = productDetails.images.sizes[0];
 
 	// // TODO: Uncomment this line when online
-	imageURL = "http://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
+	imageURL = "https://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
 
 	// Comment for offline
 	// imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
