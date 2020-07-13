@@ -31,7 +31,7 @@ function getNewMockProducts() {
 
 async function getNewProducts(offset) {
   try {
-    const response = await fetch(`https://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
+    const response = await fetch(`http://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
     const json = await response.json();
     processProductData(json);
   }
