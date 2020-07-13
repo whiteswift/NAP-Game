@@ -19,8 +19,8 @@ let overlayText = document.getElementById('overlay-text');
 
 function start() {
   const offset = _getRandomOffset();
-
   getNewProducts(offset)
+
   // getNewMockProducts() // uncomment for offline data
 }
 
