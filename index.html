@@ -2,97 +2,108 @@
 <html>
 
 <head>
-	<title>nap's price is right</title>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41187438-5"></script>
-	<link rel="icon" href="favicon.png">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="preload" href="js/main.js" as="script" />
-	<link rel="preload" href="images/blackHeart.png" as="image" />
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
-		gtag('config', 'UA-41187438-5');
-	</script>
-	<link rel="stylesheet" href="css/main.css" as="style">
+  <title>nap's price is right</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41187438-5"></script>
+  <link rel="icon" href="favicon.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preload" href="js/main.js" as="script" />
+  <link rel="preload" href="images/blackHeart.png" as="image" />
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-41187438-5');
+  </script>
+  <link rel="stylesheet" href="css/main.css" as="style">
 </head>
 
 <body>
 
-	<div class="container">
+  <div class="container">
 
-		<header class="scoring">
-			<div id='lives' class="col">
-				<!-- ❤️❤️❤️ -->
-				<img src='./images/heart.png' alt='life' />
-				<img src='./images/heart.png' alt='life' />
-				<img src='./images/heart.png' alt='life' />
-			</div>
-			<div class="col centre">
-				<h1>nap's price is right</h1>
-			</div>
-			<div>
-				<div id="score-container" class="badge badge-danger">
-					SCORE <span id='score'>0</span>
-				</div>
-			</div>
-		</header>
+    <header class="scoring">
+      <div id='lives' class="col">
+        <!-- ❤️❤️❤️ -->
+        <img src='./images/heart.png' alt='life' />
+        <img src='./images/heart.png' alt='life' />
+        <img src='./images/heart.png' alt='life' />
+      </div>
+      <div class="col centre">
+        <h1>NET-A-PORTER's<br />price is right</h1>
+      </div>
+      <div>
+        <div id="score-container" class="badge badge-danger">
+          SCORE <span id='score'>0</span>
+        </div>
+      </div>
+    </header>
 
-		<div class="product-container">
-			<div id="ticker-wrapper">
-				<div class="product__image centre">
-					<img id='product0' data-is-active='true' data-price='' class="product pic0 img" src="images/skeleton.png" alt="Product 0">
-				</div>
-				<div class="product__image centre">
-					<img id='product1' data-is-active='' data-price='' class="product pic1 img" src="images/skeleton.png" alt="Product 1">
-				</div>
-				<div class="product__image centre">
-					<img id='product2' data-is-active='' data-price='' class="product pic2 img" src="images/skeleton.png" alt="Product 2">
-				</div>
-				<div class="product__image centre">
-					<img id='product3' data-is-active='' data-price='' class="product pic3 img" src="images/skeleton.png" alt="Product 3">
-				</div>
-				<div class="product__image centre">
-					<img id='product4' data-is-active='' data-price='' class="product pic4 img" src="images/skeleton.png" alt="Product 4">
-				</div>
-				<div class="product__image centre">
-					<img id='product5' data-is-active='' data-price='' class="product pic5 img" src="images/skeleton.png" alt="Product 5">
-				</div>
-				<div class="product__image centre">
-					<img id='product6' data-is-active='' data-price='' class="product pic6 img" src="images/skeleton.png" alt="Product 6">
-				</div>
-				<div class="product__image centre">
-					<img id='product7' data-is-active='' data-price='' class="product pic7 img" src="images/skeleton.png" alt="Product 7">
-				</div>
-				<div class="product__image centre">
-					<img id='product8' data-is-active='' data-price='' class="product pic8 img" src="images/skeleton.png" alt="Product 8">
-				</div>
-				<div class="product__image centre">
-					<img id='product9' data-is-active='' data-price='' class="product pic9 img" src="images/skeleton.png" alt="Product 9">
-				</div>
-				<div class="product__image centre">
-					<img id='product10' data-is-active='' data-price='' class="product pic10 img" src="images/skeleton.png" alt="Product 10">
-				</div>
-			</div>
-		</div>
-	</div>
+    <div id="product-container">
+      <div id="ticker-wrapper">
+        <div class="product__image centre">
+          <img id='product0' data-is-active='true' data-price='' class="product pic0 img" src="images/skeleton.png"
+            alt="Product 0">
+        </div>
+        <div class="product__image centre">
+          <img id='product1' data-is-active='' data-price='' class="product pic1 img" src="images/skeleton.png"
+            alt="Product 1">
+        </div>
+        <div class="product__image centre">
+          <img id='product2' data-is-active='' data-price='' class="product pic2 img" src="images/skeleton.png"
+            alt="Product 2">
+        </div>
+        <div class="product__image centre">
+          <img id='product3' data-is-active='' data-price='' class="product pic3 img" src="images/skeleton.png"
+            alt="Product 3">
+        </div>
+        <div class="product__image centre">
+          <img id='product4' data-is-active='' data-price='' class="product pic4 img" src="images/skeleton.png"
+            alt="Product 4">
+        </div>
+        <div class="product__image centre">
+          <img id='product5' data-is-active='' data-price='' class="product pic5 img" src="images/skeleton.png"
+            alt="Product 5">
+        </div>
+        <div class="product__image centre">
+          <img id='product6' data-is-active='' data-price='' class="product pic6 img" src="images/skeleton.png"
+            alt="Product 6">
+        </div>
+        <div class="product__image centre">
+          <img id='product7' data-is-active='' data-price='' class="product pic7 img" src="images/skeleton.png"
+            alt="Product 7">
+        </div>
+        <div class="product__image centre">
+          <img id='product8' data-is-active='' data-price='' class="product pic8 img" src="images/skeleton.png"
+            alt="Product 8">
+        </div>
+        <div class="product__image centre">
+          <img id='product9' data-is-active='' data-price='' class="product pic9 img" src="images/skeleton.png"
+            alt="Product 9">
+        </div>
+        <div class="product__image centre">
+          <img id='product10' data-is-active='' data-price='' class="product pic10 img" src="images/skeleton.png"
+            alt="Product 10">
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<div class='fixed cta-buttons'>
-		<div class=''>
-			<button id='bank' type="button" class="btn btn-dark btn-block">Bank ＄</button>
-		</div>
-	</div>
+  <div class='fixed cta-buttons'>
+    <div class=''>
+      <button id='bank' type="button" class="btn btn-dark btn-block">Bank ＄</button>
+    </div>
+  </div>
 
-	<div id="overlay">
-		Loading message...
-	</div>
+  <div id="overlay">
+    Loading message...
+  </div>
 
-	<div id="end-game-overlay">
-		Loading message...
-	</div>
+  <div id="end-game-overlay">
+    Loading message...
+  </div>
 
-	<script defer src="js/main.js"></script>
+  <script defer src="js/main.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,3 @@
-
-document.addEventListener("DOMContentLoaded", start, false);
 const bankImages = 3;
 const loseImages = 5;
 const winGifs = 3;
@@ -14,152 +12,140 @@ let turn = 0;
 const left = 'left';
 const right = 'right';
 const bank = 'bank';
-const slideDistance = -442;
 const numberOfProducts = 11;
 const ticker = document.getElementById("ticker-wrapper");
+const productContainer = document.getElementById("product-container");
 let overlayText = document.getElementById('overlay-text');
 
 function start() {
-	// resetProducts();
-	const offset = _getRandomOffset();
+  const offset = _getRandomOffset();
 
-	getNewProducts(offset)
-	// getNewMockProducts();
+  getNewProducts(offset)
+  // getNewMockProducts() // uncomment for offline data
 }
 
 function getNewMockProducts() {
-	// debugger check 
-	const summariesData = JSON.parse(summaries);
-	processProductData(summariesData);
-
-	// Let processProductData handle checking for what products have been set.
+  const summariesData = JSON.parse(summaries);
+  processProductData(summariesData);
 }
 
 async function getNewProducts(offset) {
-	// TODO: Change this to just get data from summaries api
-
-	try {
-		const response = await fetch(`https://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
-		const json = await response.json();
-		processProductData(json);
-	}
-	catch (error) {
-		console.error(error);
-	}
-
-	// .then((response) => {
-	// 		if (response.status !== 200) {
-	// 			console.log('fetch failed', response.status);
-	// 			return;
-	// 		}
-	// 		return response.json();
-	// 	})
-	// 	.then((jsonProductData) => {
-	// 		processProductData(jsonProductData)
-	// 	})
-	// 	.catch(error => {
-	// 		console.log(error)
-	// 	});
+  try {
+    const response = await fetch(`https://lad-api.net-a-porter.com:80/NAP/GB/en/60/${offset}/summaries?priceMin=100000&visibility=visible`);
+    const json = await response.json();
+    processProductData(json);
+  }
+  catch (error) {
+    console.error(error);
+  }
 }
 
 function processProductData(productData) {
-	// Set 10 different products data with random numbers. Random numbers used to select array positions
-	let pids = [];
-	let uniquePids = [];
+  // Set 10 different products data with random numbers. Random numbers used to select array positions
+  let pids = [];
+  let uniquePids = [];
 
-	while (uniquePids.length < numberOfProducts) { // make sure none of the pids are the same
-		pids = setRandomArray(numberOfProducts);
-		uniquePids = [...new Set(pids)];
-	}
+  while (uniquePids.length < numberOfProducts) { // make sure none of the pids are the same
+    pids = setRandomArray(numberOfProducts);
+    uniquePids = [...new Set(pids)];
+  }
 
-	// map over pids array to fire off setDOM function
-	pids.map((productNumber, count) => {
-		// productNumber 23,35,53
-		// count 0,1,2,3		
-		setProductDetailsInDom(productData.summaries[productNumber], count);
-	})
+  // map over pids array to fire off setDOM function
+  pids.map((productNumber, count) => {
+    // productNumber 23,35,53
+    // count 0,1,2,3		
+    setProductDetailsInDom(productData.summaries[productNumber], count);
+  })
 }
 
 function setRandomArray(iterations) {
-	let tempPids = [];
-	for (var i = 0; i < iterations; i++) {
-		tempPids.push(_getRandomNumber(0, 59))
-	}
-	return tempPids;
+  let tempPids = [];
+  for (var i = 0; i < iterations; i++) {
+    tempPids.push(_getRandomNumber(0, 59))
+  }
+  return tempPids;
 }
 
 function setProductDetailsInDom(productDetails, productNumber) {
-	const product = document.getElementById(`product${productNumber}`);
+  const product = document.getElementById(`product${productNumber}`);
 
-	pid = productDetails.id;
-	shot = productDetails.images.shots[0];
-	size = productDetails.images.sizes[0];
+  pid = productDetails.id;
+  shot = productDetails.images.shots[0];
+  size = productDetails.images.sizes[0];
 
-	// // TODO: Uncomment this line when online
-	imageURL = "https://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
+  // // TODO: Uncomment this line when online
+  imageURL = "https://cache.net-a-porter.com/images/products/" + pid + "/" + pid + "_" + shot + "_" + size + ".jpg";
 
-	// Comment for offline
-	// imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
+  // Comment for offline
+  // imageURL = `./images/sample${_getRandomNumber(1, 4)}.jpg`;
 
-	price = productDetails.price.amount;
+  price = productDetails.price.amount;
 
-	product.setAttribute('src', imageURL);
-	product.setAttribute('data-price', price);
+  product.setAttribute('src', imageURL);
+  product.setAttribute('data-price', price);
 }
 
 function processAnswer(selection) {
-	// Store current product being tested in window or localstorage?
-	if (turn === (numberOfProducts - 1)) { console.log('No more products - this shouldnt be shown') }
+  // Store current product being tested in window or localstorage?
+  if (turn === (numberOfProducts - 1)) { console.log('No more products - this shouldnt be shown') }
 
-	var leftProductPrice = document.getElementById(`product${turn}`).dataset.price / 100;
-	var rightProductPrice = document.getElementById(`product${turn + 1}`).dataset.price / 100;
+  var leftProductPrice = document.getElementById(`product${turn}`).dataset.price / 100;
+  var rightProductPrice = document.getElementById(`product${turn + 1}`).dataset.price / 100;
 
-	let overlay = document.getElementById('overlay');
+  let overlay = document.getElementById('overlay');
 
-	// TODO: Change this to a switch
-	if (selection === bank) {
-		bankPoints();
-	}
-	else if (selection === left && leftProductPrice > rightProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, winGifs + 1)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
-		addToScore();
-		nextTurn();
-	}
-	else if (selection === right && leftProductPrice < rightProductPrice) {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, winGifs + 1)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
-		addToScore();
-		nextTurn();
-	}
-	else if (leftProductPrice === rightProductPrice) {
-		overlay.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + leftProductPrice + '<br/>Product B: £' + rightProductPrice + '<br/><br/></span>');
-		nextTurn();
-	}
-	else {
-		overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, loseImages + 1)}.jpg'/></div><span id="overlay-text"><br/><b>Incorrect!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
-		loseALife();
-	}
+  // TODO: Change this to a switch
+  if (selection === bank) {
+    bankPoints();
+  }
+  else if (selection === left && leftProductPrice > rightProductPrice) {
+    overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, winGifs + 1)}.gif'/></div><span id="overlay-text"><br/<b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
+    addToScore();
+    nextTurn();
+  }
+  else if (selection === right && leftProductPrice < rightProductPrice) {
+    overlay.innerHTML = (`<div id="img-container"><img src='./images/win/${_getRandomNumber(1, winGifs + 1)}.gif'/></div><span id="overlay-text"><br/><b>Correct!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
+    addToScore();
+    nextTurn();
+  }
+  else if (leftProductPrice === rightProductPrice) {
+    overlay.innerHTML = ('Same price!<br/><br/> No points though sorry. Product A: £' + leftProductPrice + '<br/>Product B: £' + rightProductPrice + '<br/><br/></span>');
+    nextTurn();
+  }
+  else {
+    overlay.innerHTML = (`<div id="img-container"><img src='./images/lose/${_getRandomNumber(1, loseImages + 1)}.jpg'/></div><span id="overlay-text"><br/><b>Incorrect!</b><br/><br/> Product A: £${leftProductPrice}<br/>Product B: £${rightProductPrice}<br/><br/></span>`);
+    loseALife();
+  }
 
-	toggleOverlayMessage()
-	setTimeout(function () { toggleOverlayMessage(); }, 1500);
-	// Reload the page to start a new game
-	// getNewProducts(); // Get new products again
+  toggleOverlayMessage()
+  setTimeout(function () { toggleOverlayMessage(); }, 1500);
+  // Reload the page to start a new game
+  // getNewProducts(); // Get new products again
 }
 
 function nextTurn() {
-	++turn;
+  ++turn;
+  if (turn === (numberOfProducts - 1)) { //if turn = 10
+    winGame();
+  }
 
-	console.log(`TURN ${turn}`);
-	// Do something with turn
-	if (turn === (numberOfProducts - 1)) { //if turn = 10
-		winGame();
-	}
-
-	slideLeft()
-	document.getElementById(`product${turn}`).setAttribute('data-is-active', 'true') // set data-is-active on .product img
+  slideLeft()
+  document.getElementById(`product${turn}`).setAttribute('data-is-active', 'true') // set data-is-active on .product img
 }
 
 function slideLeft() {
-	ticker.style.transform = `translateX(${turn * -442}px)`
+
+  let slideBy;
+  console.log(window.innerWidth);
+  if (window.innerWidth > 1024) { // desktop animation
+    console.log('yes');
+    slideBy = turn * (window.innerWidth * 0.25) // 24+1vw img+margin
+  } else { // mobile animation
+    console.log('no');
+    slideBy = turn * (window.innerWidth * 0.4) // 39+1vw img+margin
+  }
+
+  ticker.style.transform = `translateX(-${slideBy}px)`
 }
 
 //////////////////////
@@ -167,84 +153,86 @@ function slideLeft() {
 //////////////////////
 
 function addToScore() {
-	score++;
-	document.getElementById('score').innerHTML = score;
+  score++;
+  document.getElementById('score').innerHTML = score;
 }
 
 function loseALife() {
-	const livesDisplay = document.getElementById('lives');
+  const livesDisplay = document.getElementById('lives');
 
-	switch (lives) {
-		case 3:
-			// livesDisplay.innerHTML = '❤️️❤️️🖤️️';
-			livesDisplay.innerHTML = `
+  switch (lives) {
+    case 3:
+      // livesDisplay.innerHTML = '❤️️❤️️🖤️️';
+      livesDisplay.innerHTML = `
 			<img src='./images/heart.png' alt='life' />
 			<img src='./images/heart.png' alt='life' />
 			<img src='./images/blackHeart.png' alt='life-container' />`;
-			break;
-		case 2:
-			// livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
-			livesDisplay.innerHTML = `
+      break;
+    case 2:
+      // livesDisplay.innerHTML = '❤️️🖤️️🖤️️';
+      livesDisplay.innerHTML = `
 			<img src='./images/heart.png' alt='life' />
 			<img src='./images/blackHeart.png' alt='life-container' />
 			<img src='./images/blackHeart.png' alt='life-container' />`;
-			break;
-		case 1:
-			// livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
-			livesDisplay.innerHTML = `
+      break;
+    case 1:
+      // livesDisplay.innerHTML = '🖤️️🖤️️🖤️️';
+      livesDisplay.innerHTML = `
 			<img src='./images/blackHeart.png' alt='life-container' />
 			<img src='./images/blackHeart.png' alt='life-container' />
 			<img src='./images/blackHeart.png' alt='life-container' />`;
-			gameOver();
-			break;
-		default:
-			break;
-	}
+      gameOver();
+      break;
+    default:
+      break;
+  }
 
-	lives = --lives;
+  lives = --lives;
 }
 
 function bankPoints() {
-	saveScore(score);
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, bankImages + 1)}.jpg'/><div class='outcome'>BANK!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
-	toggleEndGameOverlayMessage();
+  saveScore(score);
+  document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, bankImages + 1)}.jpg'/><div class='outcome'>BANK!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+  toggleEndGameOverlayMessage();
 }
 
 function winGame() {
-	saveScore(score);
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, bankImages + 1)}.jpg'/><div class='outcome'>YOU WIN!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
-	toggleEndGameOverlayMessage();
+  saveScore(score);
+  document.getElementById('end-game-overlay').innerHTML = `<img src='./images/bank/${_getRandomNumber(1, bankImages + 1)}.jpg'/><div class='outcome'>YOU WIN!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+  toggleEndGameOverlayMessage();
 }
 
 function gameOver() { // modal and gif with score
-	saveScore(0);
-	document.getElementById('score').innerHTML = 0;
-	document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, loseImages + 1)}.jpg'/><div class='outcome'>YOU LOSE!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
-	toggleEndGameOverlayMessage()
+  saveScore(0);
+  document.getElementById('score').innerHTML = 0;
+  document.getElementById('end-game-overlay').innerHTML = `<img src='./images/lose/${_getRandomNumber(1, loseImages + 1)}.jpg'/><div class='outcome'>YOU LOSE!</div><button id='new-game' onClick=location.reload()>NEW GAME</button>`;
+  toggleEndGameOverlayMessage()
 }
 
 function saveScore(points) { // Save score in localStorage
-	// get team scores array from localStorage if any
-	let scores;
-	try {
-		scores = JSON.parse(window.localStorage.getItem('scores'));
-	} catch (error) { }
+  // get team scores array from localStorage if any
+  let scores;
+  try {
+    scores = JSON.parse(window.localStorage.getItem('scores'));
+  } catch (error) { }
 
 
-	if (!scores) scores = [];
-	// make team object to scores array
-	scores.push(points)
-	// push new score to array
+  if (!scores) scores = [];
+  // make team object to scores array
+  scores.push(points)
+  // push new score to array
 
-	try {
-		window.localStorage.setItem('scores', JSON.stringify(scores));
-	} catch (error) { }
+  try {
+    window.localStorage.setItem('scores', JSON.stringify(scores));
+  } catch (error) {
+    console.log('Could not set score');
+  }
 }
 
 function clearScores() {
-	try {
-		window.localStorage.removeItem('scores');
-	} catch (error) { console.log }
+  try {
+    window.localStorage.removeItem('scores');
+  } catch (error) { console.log }
 }
 
 //////////////////////
@@ -252,69 +240,70 @@ function clearScores() {
 //////////////////////
 
 function _getRandomOffset() {
-	var offset = _getRandomNumber(0, 1000);
-	return offset;
+  var offset = _getRandomNumber(0, 1000);
+  return offset;
 }
 
 function _getRandomNumber(min, max) {
-	return Math.floor(Math.random() * (max - min) + min);
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 function toggleOverlayMessage() {
-	el = document.getElementById("overlay");
-	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+  el = document.getElementById("overlay");
+  el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 
 function toggleEndGameOverlayMessage() {
-	el = document.getElementById("end-game-overlay");
-	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+  el = document.getElementById("end-game-overlay");
+  el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
 
 function isOverlayVisible() {
-	el = document.getElementById("overlay");
-	return el.style.visibility;
+  el = document.getElementById("overlay");
+  return el.style.visibility;
 }
 
 //////////////////////
 // Event listeners
 //////////////////////
 
+document.addEventListener("DOMContentLoaded", start, false);
+
 [].forEach.call(document.getElementsByClassName('product'), (element) => {
-	element.addEventListener('click', () => {
-		let selection = !!element.dataset.isActive ? 'left' : 'right';
-		processAnswer(selection);
-	});
+  element.addEventListener('click', () => {
+    let selection = !!element.dataset.isActive ? 'left' : 'right';
+    processAnswer(selection);
+  });
 });
 
-// document.getElementById('overlay').addEventListener('click', () => { toggleOverlayMessage(); });
 document.getElementById('bank').addEventListener('click', () => { processAnswer('bank'); });
 
 // TODO: Make a switch
 window.addEventListener('keydown', (event) => {
 
-	if (event.keyCode === 37) { // Left
-		event.preventDefault();
-		// Check if overlay is present - then return if so
-		if (isOverlayVisible() !== 'visible') {
-			processAnswer(left);
-		}
-	}
-	if (event.keyCode === 39) { // Right
-		event.preventDefault();
-		if (isOverlayVisible() !== 'visible') {
-			processAnswer(right);
-		}
-	}
-	if (event.keyCode === 66) { // B
-		event.preventDefault();
-		if (isOverlayVisible() !== 'visible') {
-			processAnswer(bank);
-		}
-	}
-	if (event.keyCode === 32 && isOverlayVisible()) { // Spacebar
-		event.preventDefault();
-		toggleOverlayMessage()
-	}
+  if (event.keyCode === 37) { // Left
+    event.preventDefault();
+    // Check if overlay is present - then return if so
+    if (isOverlayVisible() !== 'visible') {
+      processAnswer(left);
+    }
+  }
+  if (event.keyCode === 39) { // Right
+    event.preventDefault();
+    if (isOverlayVisible() !== 'visible') {
+      processAnswer(right);
+    }
+  }
+  if (event.keyCode === 66) { // B
+    event.preventDefault();
+    if (isOverlayVisible() !== 'visible') {
+      processAnswer(bank);
+    }
+  }
+  if (event.keyCode === 32 && isOverlayVisible()) { // Spacebar
+    event.preventDefault();
+    toggleOverlayMessage()
+  }
 });
 
 // TODO: remove this mock product respnose

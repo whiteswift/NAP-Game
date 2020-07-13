@@ -1,13 +1,30 @@
 @import './vars.css';
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  /* background: linear-gradient(338deg, blue, orange, green); */
+  background: linear-gradient(22deg, white, #b3b3b3, #ddefff);
+  background-size: 800% 800%;
+  animation: cycleColours 10s ease-out infinite;
+  transition: all 0.25s ease-in 0s;
+}
+
+@keyframes cycleColours {
+  0% {
+    background-position: 0% 81%
+  }
+  50% {
+    background-position: 100% 20%
+  }
+  100% {
+    background-position: 0% 81%
+  }
 }
 
 header {
   display: flex;
   justify-content: space-evenly;
-  font-family: sans-serif;
+  align-items: center;
 }
 
 header div {
@@ -40,7 +57,6 @@ h1 {
 }
 
 .fixed {
-  /* position: sticky; */
   position: fixed;
   display: flex;
   justify-content: center;
@@ -117,29 +133,51 @@ h1 {
   text-align: center;
 }
 
-.img {
-  width: 438px;
-  height: 657px;
+/* Sliding product */
+
+#product-container {
+  overflow: hidden;
+  width: 78vw;
+  margin: 0 auto;
 }
 
-.product-container {
-  overflow: hidden;
-  width: 884px;
-  margin: 0 auto;
+.img {
+  /* 1 */
+  width: 39vw;
+  height: auto;
 }
 
 .product__image {
   display: inline-block;
   cursor: pointer;
+  float: left;
+}
+
+.product__image:not(:first-child) {
+  /* 2 */
+  margin-left: 1vw;
+}
+
+@media only screen and (min-width: 1024px) {
+  #product-container {
+    width: 50vw;
+  }
+  .img {
+    /* 1 */
+    width: 24vw;
+  }
+  .product__image:not(:first-child) {
+    /* 2 */
+    margin-left: 1vw;
+  }
 }
 
 #ticker-wrapper {
-  /* width: var(--ticker-width); */
   -webkit-transition: all 1.0s ease-in-out;
   -moz-transition: all 1.0s ease-in-out;
   -o-transition: all 1.0s ease-in-out;
   transition: all 1.0s ease-in-out;
-  width: 5000px;
+  width: calc(10 * 50vw);
 }
 
 .ticking {
@@ -210,11 +248,14 @@ h1 {
 }
 
 /* FOR DEBUGGING REMOVE WHEN LIVE */
+
 /* Override CSS for overflow to be scroll */
+
 /* .product[data-is-active^="true"] {
   border: 1px solid red;
 } */
-/* .product-container {
+
+/* #product-container {
   overflow: inherit !important;
   margin: 0 auto;
 } */
@@ -223,29 +264,25 @@ h1 {
   h1 {
     font-size: 1.5em;
   }
-
   #lives img {
     height: 2em;
   }
-
   #score-container {
     font-size: 1.5em;
   }
-
   .cta-buttons button {
     height: 3em;
     font-size: 2vh;
   }
-
   #overlay {
     right: 30px;
-    top: 20%;
-    min-width: 300px;
-    max-width: 500px;
+    top: 8vh;
+    min-width: 268px;
+    max-width: 30vw;
     min-height: 450px;
-    max-height: 775px;
+    max-height: 95vh;
+    pointer-events: none;
   }
-
   #end-game-overlay img {
     height: 50%;
     width: auto;
