@@ -6,7 +6,7 @@ It works well on a TV or projector, but it's also responsive so you can use it o
 
 Made using vanilla JavaScript so it runs fast and close to the metal 👀
 
-![alt tag](https://raw.githubusercontent.com/whiteswift/NAP-Game/master/images/demo.png)
+![Game demo](https://raw.githubusercontent.com/whiteswift/NAP-Game/master/images/demo.png)
 
 ## Demo
 
